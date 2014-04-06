@@ -1,0 +1,39 @@
+<header class="clearfix">
+  <h1>zenome</h1>
+  <input
+    ng-model="userSelect"
+    typeahead="user.Name for user in users | filter: {Name:$viewValue}"
+    typeahead-editable="false"
+    typeahead-on-select="userSelected($item)"
+    type="text"
+    tabindex="1"
+    placeholder="Select User"
+    class="pull-right" />
+</header>
+<div
+  ui-sortable="userSort"
+  ng-model="userList"
+  class="userList clearfix">
+  <div
+    ng-repeat="user in userList"
+    class="user">
+      <img
+        ng-src="{{user.PhotoPath}}"
+        alt="{{user.Name}}"
+        class="img-thumbnail"
+        onimageload>
+      <d>
+        {{user.Name}}<br>
+        <b>{{user.KeyscanStatus}}</b>
+      </d>
+      <x
+        ng-click="userRemove($index)"
+        class="close">
+        &times;
+      </x>
+  </div>
+</div>
+<div class="row">
+  <pre class="col-xs-6">{{userList | json}}</pre>
+  <pre class="col-xs-6">{{users | json}}</pre>
+</div>
