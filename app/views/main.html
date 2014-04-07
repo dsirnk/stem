@@ -16,6 +16,12 @@
   class="userList clearfix">
   <div
     ng-repeat="user in userList"
+    id="user{{$index}}"
+    tabindex="{{$index + 1}}"
+    ui-keydown="{
+      backspace: 'userRemove($event, $index)',
+      delete: 'userRemove($event, $index)',
+    }"
     class="user">
       <img
         ng-src="{{user.PhotoPath}}"
@@ -27,7 +33,7 @@
         <b>{{user.KeyscanStatus}}</b>
       </d>
       <x
-        ng-click="userRemove($index)"
+        ng-click="userRemove($event, $index)"
         class="close">
         &times;
       </x>

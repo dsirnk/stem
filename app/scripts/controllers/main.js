@@ -7,13 +7,11 @@ angular
 
     var genome = 'http://genome.klick.com',
         /*==========  Get Data from API  ==========*/
-        genomeAPI = function(query, callback, err) {
+        genomeAPI = function (param, callback, err) {
+          angular.extend(param, { format: 'json', callback: 'JSON_CALLBACK' });
           $http
-            .jsonp(
-              genome + '/api/' +
-              query +
-              '&format=json&callback=JSON_CALLBACK'
-            )
+            .jsonp( genome + '/api/User', { params : param })
+            // .get( genome + '/elements/javascripts/data/enabledusers/' )
             .success(callback)
             .error(err)
           ;
@@ -28,9 +26,12 @@ angular
       },true);
 
     /*==========  Get List of Users  ==========*/
-    genomeAPI('User?ForAutocompleter=true&ForGrid=true', function(response) {
-      $scope.users = response.Entries;
-    });
+    genomeAPI(
+      { ForAutocompleter: true, ForGrid: true },
+      function (response) {
+        $scope.users = response.Entries;
+      }
+    );
     // $scope.users = ComboUsersData;
     $scope
       .userSelected = function ($item) {
@@ -44,19 +45,30 @@ angular
         }
         if (!userExists) {
           /*==========  Get User Data  ==========*/
-          genomeAPI('User?UserID=' + $item.UserID, function (response) {
-            $item = response.Entries[0];
-            $item.PhotoPath = genome + $item.PhotoPath;
-            /*==========  Add to userList  ==========*/
-            $scope.userList.push($item);
-          });
-
+          genomeAPI(
+            { userID: $item.UserID },
+            function (response) {
+              $item = response.Entries[0];
+              $item.PhotoPath = genome + $item.PhotoPath;
+              /*==========  Add to userList  ==========*/
+              $scope.userList.push($item);
+            }
+          );
         }
         $scope.userSelect = null;
       };
     $scope
-      .userRemove = function ($item) {
+      .userRemove = function ($event, $item) {
+        $event.preventDefault();
         $scope.userList.splice($item, 1);
+      };
+    $scope
+      .userSort = {
+        containment: 'parent',
+        cursor: 'move',
+        opacity: 0.75,
+        revert: true,
+        tolerance: 'intersect',
       };
   })
   // /*==========  Store images offline  ==========*/
