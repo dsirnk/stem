@@ -8,16 +8,18 @@
     type="text"
     tabindex="1"
     placeholder="Select User"
-    class="pull-right" />
+    class="form-control" />
 </header>
+<alert ng-repeat="alert in alerts" type="alert.type">{{alert.msg}}</alert>
 <div
   ui-sortable="userSort"
   ng-model="userList"
-  class="userList clearfix">
+  class="userList clearfix"
+  ng-class="">
   <div
     ng-repeat="user in userList"
     id="user{{$index}}"
-    tabindex="{{$index + 1}}"
+    tabindex="1"
     ui-keydown="{
       backspace: 'userRemove($event, $index)',
       delete: 'userRemove($event, $index)',
@@ -39,7 +41,7 @@
       </x>
   </div>
 </div>
-<div class="row">
-  <pre class="col-xs-6">{{userList | json}}</pre>
+<!-- <div class="row">
+  <pre class="col-xs-6">{{userList | filter: Name | json}}</pre>
   <pre class="col-xs-6">{{users | json}}</pre>
-</div>
+</div> -->

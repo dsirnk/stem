@@ -2,19 +2,26 @@
 
 angular
   .module('zenomeApp')
-  .controller('MainCtrl', function ($scope, $http) {
-    $scope.userList = JSON.parse(localStorage.userList || '[]');
+  .controller('MainCtrl', function ($scope, $http, $filter) {
+    $scope.alerts = $scope.users = [];
+    $scope.userList = angular.fromJson(localStorage.userList || '[]');
 
     var genome = 'http://genome.klick.com',
         /*==========  Get Data from API  ==========*/
-        genomeAPI = function (param, callback, err) {
-          angular.extend(param, { format: 'json', callback: 'JSON_CALLBACK' });
+        GenomeAPI = function (param, callback) {
+          var config = { format: 'json', callback: 'JSON_CALLBACK' };
           $http
-            .jsonp( genome + '/api/User', { params : param })
+            .jsonp(genome + '/api/User', {params: angular.extend(config, param)})
             // .get( genome + '/elements/javascripts/data/enabledusers/' )
             .success(callback)
-            .error(err)
-          ;
+            .error(function() {
+              $scope.alerts.push({
+                type: 'danger',
+                msg: 'Couldn\'t connect to the API.\n' +
+                  'Please ensure you are connected to the internet and' +
+                  'Logged into http://geome.klick.com'
+              });
+            });
         };
 
     /*==========  Watch userList for changes to sync localStorage  ==========*/
@@ -26,29 +33,20 @@ angular
       },true);
 
     /*==========  Get List of Users  ==========*/
-    genomeAPI(
+    new GenomeAPI(
       { ForAutocompleter: true, ForGrid: true },
-      function (response) {
-        $scope.users = response.Entries;
-      }
+      function(r) { $scope.users = r.Entries; }
     );
     // $scope.users = ComboUsersData;
     $scope
       .userSelected = function ($item) {
         /*==========  Avoid Duplicate Entires in userList  ==========*/
-        var userExists = false;
-        for (var i = 0; i < $scope.userList.length; i++) {
-          if($scope.userList[i].UserID === $item.UserID) {
-            userExists = true;
-            continue;
-          }
-        }
-        if (!userExists) {
+        if (!$filter('filter')($scope.userList, {UserID: $item.UserID}).length) {
           /*==========  Get User Data  ==========*/
-          genomeAPI(
+          new GenomeAPI(
             { userID: $item.UserID },
-            function (response) {
-              $item = response.Entries[0];
+            function (r) {
+              $item = r.Entries[0];
               $item.PhotoPath = genome + $item.PhotoPath;
               /*==========  Add to userList  ==========*/
               $scope.userList.push($item);
@@ -57,6 +55,7 @@ angular
         }
         $scope.userSelect = null;
       };
+    /*==========  Remove from userList  ==========*/
     $scope
       .userRemove = function ($event, $item) {
         $event.preventDefault();
@@ -70,6 +69,11 @@ angular
         revert: true,
         tolerance: 'intersect',
       };
+    /*==========  Update userList  ==========*/
+    $scope
+      .userUpdate = setInterval(function() {
+        // $scope.userList
+    }, 15000);
   })
   // /*==========  Store images offline  ==========*/
   // .directive('onimageload', function () {
