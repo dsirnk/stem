@@ -2,7 +2,7 @@
   <h1>zenome</h1>
   <input
     ng-model="userSelect"
-    typeahead="user.Name for user in users | filter: {Name:$viewValue}"
+    typeahead="user.Name for user in user.Entries | filter: {Name:$viewValue}"
     typeahead-editable="false"
     typeahead-on-select="userSelected($item)"
     type="text"
@@ -42,5 +42,5 @@
 </ul>
 <div class="row">
   <pre class="col-xs-6">{{userList | filter: Name | json}}</pre>
-  <pre class="col-xs-6">{{users | json}}</pre>
+  <pre class="col-xs-6">{{user.Entries | json}}</pre>
 </div>
