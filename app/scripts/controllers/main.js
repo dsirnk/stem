@@ -55,19 +55,17 @@ angular
         tolerance: 'pointer',
       },
       /*==========  Update userList  ==========*/
-      // userUpdate: setInterval(function() {
-      //   for (var i = 0; i < $scope.userList.length; i++) {
-      //     // #todo: Use Async for loop
-      //     var thisUser = $scope.userList[i];
-      //     Genome.User.get({ UserID: thisUser.UserID })
-      //       .$promise.then(function(r) {
-      //         if(!angular.equals(thisUser, r)) {
-      //           // #todo: Highlight user on change
-      //         };
-      //         angular.extend(thisUser, r);
-      //       });
-      //   }
-      // }, 10000)
+      userUpdate: setInterval(function() {
+        angular.forEach($scope.userList, function(user) {
+          Genome.User.get({ UserID: user.UserID })
+            .$promise.then(function(r) {
+              if(!angular.equals(user, r)) {
+                // #todo: Highlight user on change
+              }
+              angular.extend(user, r);
+            });
+        });
+      }, refreshInterval)
     });
   })
   /*==========  User API Interaction  ==========*/
