@@ -31,7 +31,7 @@ angular
         /*==========  Avoid Duplicate Entires in userList  ==========*/
         if (!$filter('filter')($scope.userList, user).length) {
           Genome.User.get(user)
-            .$promise.then(function(r) {
+            .$promise.then(function (r) {
               $scope.userList.push(r);
             });
         }
@@ -55,10 +55,10 @@ angular
         tolerance: 'pointer',
       },
       /*==========  Update userList  ==========*/
-      userUpdate: setInterval(function() {
-        angular.forEach($scope.userList, function(user) {
+      userUpdate: setInterval(function () {
+        angular.forEach($scope.userList, function (user) {
           Genome.User.get({ UserID: user.UserID })
-            .$promise.then(function(r) {
+            .$promise.then(function (r) {
               if(!angular.equals(user, r)) {
                 // #todo: Highlight user on change
               }
@@ -69,7 +69,7 @@ angular
     });
   })
   /*==========  User API Interaction  ==========*/
-  .factory('Genome', function($resource) {
+  .factory('Genome', function ($resource) {
     return {
       Users: $resource(
         genome + '/api/User/',
@@ -80,7 +80,7 @@ angular
         genome + '/api/User/',
         { UserID: '@UserID' },
         { get: { method: 'JSONP', params: genomeAPI,
-            transformResponse: function(r) {
+            transformResponse: function (r) {
               r.Entries[0].PhotoPath = genome + r.Entries[0].PhotoPath;
               return r.Entries[0];
             }
