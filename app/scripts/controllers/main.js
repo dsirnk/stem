@@ -20,8 +20,9 @@ angular
         }
       },true);
 
-    $scope
-      .userSelected = function ($item) {
+    /*==========  Event Handlers  ==========*/
+    angular.extend($scope, {
+      userSelected: function ($item) {
         var user = { UserID: $item.UserID };
         /*==========  Avoid Duplicate Entires in userList  ==========*/
         if (!$filter('filter')($scope.userList, user).length) {
@@ -31,30 +32,40 @@ angular
             });
         }
         $scope.userSelect = null;
-      };
-    /*==========  Remove from userList  ==========*/
-    $scope
-      .userRemove = function ($event, $item) {
+      },
+      /*==========  Remove from userList  ==========*/
+      userRemove: function ($event, $item) {
         $event.preventDefault();
         $($event.target)
           .closest('.user')
           .addClass($event.type)
           .prev().focus();
         $scope.userList.splice($item, 1);
-      };
-    $scope
-      .userSort = {
+      },
+      /*==========  Sort userList (sortable config)  ==========*/
+      userSort: {
         // containment: 'parent',
         cursor: 'move',
         opacity: 0.75,
         revert: 250,
         tolerance: 'pointer',
-      };
-    /*==========  Update userList  ==========*/
-    $scope
-      .userUpdate = setInterval(function() {
-        // $scope.userList
-    }, 15000);
+      },
+      /*==========  Update userList  ==========*/
+      // userUpdate: setInterval(function() {
+      //   for (var i = 0; i < $scope.userList.length; i++) {
+      //     // #todo: Use Async for loop
+      //     var thisUser = $scope.userList[i];
+      //     Genome.User.get({ UserID: thisUser.UserID })
+      //       .$promise.then(function(r) {
+      //         if(!angular.equals(thisUser, r)) {
+      //           // #todo: Highlight user on change
+      //         };
+      //         angular.extend(thisUser, r);
+      //       });
+      //   }
+      // }, 10000)
+    });
+  })
   /*==========  User API Interaction  ==========*/
   .factory('Genome', function($resource) {
     var genome = 'http://genome.klick.com',
