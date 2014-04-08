@@ -19,6 +19,10 @@ angular
           localStorage.userList = angular.toJson(newVal);
         }
       },true);
+    // /*==========  Sync localstorage  ==========*/
+    // $scope.userStorage = function() {
+    //   localStorage.userList = angular.toJson($scope.userList);
+    // };
 
     /*==========  Event Handlers  ==========*/
     angular.extend($scope, {
