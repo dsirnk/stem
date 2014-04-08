@@ -4,6 +4,7 @@ angular
   .module('zenomeApp')
   .controller('MainCtrl', function ($scope, $http, $filter) {
     $scope.alerts = $scope.users = [];
+    /*==========  Initialize scope variables  ==========*/
     $scope.userList = angular.fromJson(localStorage.userList || '[]');
 
     var genome = 'http://genome.klick.com',
@@ -59,15 +60,19 @@ angular
     $scope
       .userRemove = function ($event, $item) {
         $event.preventDefault();
+        $($event.target)
+          .closest('.user')
+          .addClass($event.type)
+          .prev().focus();
         $scope.userList.splice($item, 1);
       };
     $scope
       .userSort = {
-        containment: 'parent',
+        // containment: 'parent',
         cursor: 'move',
         opacity: 0.75,
-        revert: true,
-        tolerance: 'intersect',
+        revert: 250,
+        tolerance: 'pointer',
       };
     /*==========  Update userList  ==========*/
     $scope
