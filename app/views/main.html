@@ -31,7 +31,7 @@
         onimageload>
       <d>
         {{user.Name}}<br>
-        <b>{{user.KeyscanStatus}}</b>
+        <b class="{{user.KeyscanStatus}}">{{user.KeyscanStatus}}</b>
       </d>
       <x
         ng-click="userRemove($event, $index)"
@@ -40,7 +40,3 @@
       </x>
   </li>
 </ul>
-<div class="row">
-  <pre class="col-xs-6">{{userList | filter: Name | json}}</pre>
-  <pre class="col-xs-6">{{user.Entries | json}}</pre>
-</div>

@@ -1,9 +1,13 @@
 /*global $:false*/
 'use strict';
 
+var genome = 'http://genome.klick.com',
+    genomeAPI = { format: 'json', callback: 'JSON_CALLBACK' },
+    refreshInterval = 60000;
+
 angular
   .module('zenomeApp')
-  .controller('MainCtrl', function ($scope, $http, $filter, Genome) {
+  .controller('MainCtrl', function ($scope, $filter, Genome) {
     /*==========  Initialize scope variables  ==========*/
     $scope.alerts = [];
     $scope.userList = angular.fromJson(localStorage.userList || '[]');
@@ -19,10 +23,6 @@ angular
           localStorage.userList = angular.toJson(newVal);
         }
       },true);
-    // /*==========  Sync localstorage  ==========*/
-    // $scope.userStorage = function() {
-    //   localStorage.userList = angular.toJson($scope.userList);
-    // };
 
     /*==========  Event Handlers  ==========*/
     angular.extend($scope, {
@@ -72,10 +72,6 @@ angular
   })
   /*==========  User API Interaction  ==========*/
   .factory('Genome', function($resource) {
-    var genome = 'http://genome.klick.com',
-        genomeAPI = { format: 'json', callback: 'JSON_CALLBACK' },
-        counter = 0;
-
     return {
       Users: $resource(
         genome + '/api/User/',
@@ -88,9 +84,6 @@ angular
         { get: { method: 'JSONP', params: genomeAPI,
             transformResponse: function(r) {
               r.Entries[0].PhotoPath = genome + r.Entries[0].PhotoPath;
-              if (r.Entries[0].UserID === 4806) {
-                r.Entries[0].KeyscanStatus = ('IN' + ++counter);
-              }
               return r.Entries[0];
             }
           }
