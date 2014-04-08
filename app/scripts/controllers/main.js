@@ -67,6 +67,9 @@ angular
         });
       }, refreshInterval)
     });
+
+    /*==========  Get List of Tickets  ==========*/
+    $scope.ticket = Genome.Tickets.get();
   })
   /*==========  User API Interaction  ==========*/
   .factory('Genome', function ($resource) {
@@ -85,7 +88,12 @@ angular
           }},
           genomeParams
         )}
-      )
+      ),
+      Tickets: $resource(
+        genomeAPI + 'Ticket/',
+        { ForAutocompleter: true, ForGrid: true },
+        { get: genomeParams }
+      ),
     };
   })
   // /*==========  Store images offline  ==========*/
