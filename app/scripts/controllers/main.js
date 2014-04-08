@@ -2,7 +2,8 @@
 'use strict';
 
 var genome = 'http://genome.klick.com',
-    genomeAPI = { format: 'json', callback: 'JSON_CALLBACK' },
+    genomeAPI = genome + '/api/',
+    genomeParams = { method: 'JSONP', params: { format: 'json', callback: 'JSON_CALLBACK' } },
     refreshInterval = 60000;
 
 angular
@@ -43,7 +44,7 @@ angular
         var user = $($event.target).closest('.user');
         var prevNext = [8,37,38].indexOf($event.keyCode)!==-1 ? 'prev' : 'next';
         user[prevNext]().focus();
-        if ([8,46].indexOf($event.keyCode)!==-1) {
+        if ([8,46, undefined].indexOf($event.keyCode)!==-1) {
           user.addClass(prevNext+'-'+$event.type);
           $scope.userList.splice($item, 1);
         }
@@ -61,9 +62,6 @@ angular
         angular.forEach($scope.userList, function (user) {
           Genome.User.get({ UserID: user.UserID })
             .$promise.then(function (r) {
-              if(!angular.equals(user, r)) {
-                // #todo: Highlight user on change
-              }
               angular.extend(user, r);
             });
         });
@@ -74,20 +72,19 @@ angular
   .factory('Genome', function ($resource) {
     return {
       Users: $resource(
-        genome + '/api/User/',
+        genomeAPI + 'User/',
         { ForAutocompleter: true, ForGrid: true },
-        { get: { method: 'JSONP', params: genomeAPI } }
+        { get: genomeParams }
       ),
       User: $resource(
-        genome + '/api/User/',
+        genomeAPI + 'User/',
         { UserID: '@UserID' },
-        { get: { method: 'JSONP', params: genomeAPI,
-            transformResponse: function (r) {
-              r.Entries[0].PhotoPath = genome + r.Entries[0].PhotoPath;
-              return r.Entries[0];
-            }
-          }
-        }
+        { get: angular.extend({ transformResponse: function (r) {
+            r.Entries[0].PhotoPath = genome + r.Entries[0].PhotoPath;
+            return r.Entries[0];
+          }},
+          genomeParams
+        )}
       )
     };
   })
