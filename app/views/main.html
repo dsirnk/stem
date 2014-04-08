@@ -19,20 +19,15 @@
   <li
     ng-repeat="user in userList"
     tabindex="1"
-    ui-keydown="{
-      backspace: 'userRemove($event, $index)',
-      delete: 'userRemove($event, $index)',
-    }"
+    ui-keydown="{ 'backspace delete up left right down': 'userMove($event, $index)' }"
     class="user">
       <img
         ng-src="{{user.PhotoPath}}"
         alt="{{user.Name}}"
         class="img-thumbnail"
         onimageload>
-      <d>
-        {{user.Name}}<br>
-        <b class="{{user.KeyscanStatus}}">{{user.KeyscanStatus}}</b>
-      </d>
+      <d>{{user.Name}}</d>
+      <k class="{{user.KeyscanStatus}}">{{user.KeyscanStatus}}</k>
       <x
         ng-click="userRemove($event, $index)"
         class="close">

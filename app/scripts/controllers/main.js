@@ -38,13 +38,15 @@ angular
         $scope.userSelect = null;
       },
       /*==========  Remove from userList  ==========*/
-      userRemove: function ($event, $item) {
+      userMove: function ($event, $item) {
         $event.preventDefault();
-        $($event.target)
-          .closest('.user')
-          .addClass($event.type)
-          .prev().focus();
-        $scope.userList.splice($item, 1);
+        var user = $($event.target).closest('.user');
+        var prevNext = [8,37,38].indexOf($event.keyCode)!==-1 ? 'prev' : 'next';
+        user[prevNext]().focus();
+        if ([8,46].indexOf($event.keyCode)!==-1) {
+          user.addClass(prevNext+'-'+$event.type);
+          $scope.userList.splice($item, 1);
+        }
       },
       /*==========  Sort userList (sortable config)  ==========*/
       userSort: {
