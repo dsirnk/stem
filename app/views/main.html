@@ -11,14 +11,13 @@
     class="form-control" />
 </header>
 <alert ng-repeat="alert in alerts" type="alert.type">{{alert.msg}}</alert>
-<div
+<ul
   ui-sortable="userSort"
   ng-model="userList"
-  class="userList clearfix"
+  class="list-unstyled clearfix"
   ng-class="">
-  <div
+  <li
     ng-repeat="user in userList"
-    id="user{{$index}}"
     tabindex="1"
     ui-keydown="{
       backspace: 'userRemove($event, $index)',
@@ -39,9 +38,9 @@
         class="close">
         &times;
       </x>
-  </div>
-</div>
-<!-- <div class="row">
+  </li>
+</ul>
+<div class="row">
   <pre class="col-xs-6">{{userList | filter: Name | json}}</pre>
   <pre class="col-xs-6">{{users | json}}</pre>
-</div> -->
+</div>
