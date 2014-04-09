@@ -4,13 +4,13 @@
 var genome = 'http://genome.klick.com',
     genomeAPI = genome + '/api/',
     genomeParams = { method: 'JSONP', params: { format: 'json', callback: 'JSON_CALLBACK' } },
-    refreshInterval = 60000;
+    refreshInterval = 6000;
 
 angular
   .module('zenomeApp')
   .controller('MainCtrl', function ($scope, $filter, Genome) {
     /*==========  Initialize scope variables  ==========*/
-    $scope.alerts = [];
+    $scope.alerts = {};
     $scope.userList = angular.fromJson(localStorage.userList || '[]');
 
     /*==========  Get List of Users  ==========*/
@@ -27,14 +27,21 @@ angular
 
     /*==========  Event Handlers  ==========*/
     angular.extend($scope, {
+      /*==========  Add user on userSelect  ==========*/
+      userAdd: function(r) {
+        $scope.userList.push(r);
+      },
+      /*==========  Update user  ==========*/
+      userUpdate: function (r, user) {
+        angular.extend(user, r);
+      },
+      /*==========  On userSelect  ==========*/
       userSelected: function ($item) {
         var user = { UserID: $item.UserID };
         /*==========  Avoid Duplicate Entires in userList  ==========*/
         if (!$filter('filter')($scope.userList, user).length) {
           Genome.User.get(user)
-            .$promise.then(function (r) {
-              $scope.userList.push(r);
-            });
+            .$promise.then($scope.userAdd, $scope.userGetError);
         }
         $scope.userSelect = null;
       },
@@ -58,15 +65,35 @@ angular
         tolerance: 'pointer',
       },
       /*==========  Update userList  ==========*/
-      userUpdate: setInterval(function () {
+      userGet: setInterval(function () {
+        var err = false;
         angular.forEach($scope.userList, function (user) {
-          Genome.User.get({ UserID: user.UserID })
-            .$promise.then(function (r) {
-              angular.extend(user, r);
-            });
+          if (!err) {
+            Genome.User.get({ UserID: user.UserID })
+              .$promise.then(function (r) {
+                $scope.userUpdate(user, r);
+              }, function(e) {
+                err = true;
+                $scope.userGetError(e);
+              });
+          }
         });
-      }, refreshInterval)
+      }, refreshInterval),
+      /*==========  Error on userGet  ==========*/
+      userGetError: function(e) {
+        clearInterval($scope.userGet);
+        console.log(e);
+        $scope.alerts.user = {
+          type: 'danger',
+          msg: 'Couldn\'t connect to the API.\n' +
+            'Please ensure you are connected to the internet and' +
+            'Logged into http://geome.klick.com'
+        };
+      },
     });
+
+    /*==========  Get List of Tickets  ==========*/
+    $scope.ticket = Genome.Tickets.get();
   })
   /*==========  User API Interaction  ==========*/
   .factory('Genome', function ($resource) {
@@ -85,7 +112,12 @@ angular
           }},
           genomeParams
         )}
-      )
+      ),
+      Tickets: $resource(
+        genomeAPI + 'Ticket/',
+        { ForAutocompleter: true, ForGrid: true },
+        { get: genomeParams }
+      ),
     };
   })
   // /*==========  Store images offline  ==========*/

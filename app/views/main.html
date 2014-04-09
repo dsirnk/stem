@@ -1,4 +1,4 @@
-<header class="clearfix">
+<header class="row clearfix">
   <h1>zenome</h1>
   <input
     ng-model="userSelect"
@@ -14,8 +14,7 @@
 <ul
   ui-sortable="userSort"
   ng-model="userList"
-  class="list-unstyled clearfix"
-  ng-class="">
+  class="list-unstyled clearfix">
   <li
     ng-repeat="user in userList"
     tabindex="1"
@@ -27,7 +26,7 @@
         class="img-thumbnail"
         onimageload>
       <d>{{user.Name}}</d>
-      <k class="{{user.KeyscanStatus}}">{{user.KeyscanStatus}}</k>
+      <k status="{{user.KeyscanStatus}}">{{user.KeyscanStatus}}</k>
       <x
         ng-click="userMove($event, $index)"
         class="close">
@@ -35,3 +34,19 @@
       </x>
   </li>
 </ul>
+<!-- <div class="panel panel-info">
+  <div class="panel-heading">Tickets ({{(ticket.Entries | filter: {GroupName:'OpenForMe'}).length}})</div>
+  <table class="table table-striped table-responsive">
+    <tr>
+      <th>TicketID</th>
+      <th>Title</th>
+      <th>AssignedToUser</th>
+    </tr>
+    <tr ng-repeat="ticket in ticket.Entries | filter: {GroupName:'OpenForMe'} | orderBy:'GroupName':true">
+      <td>{{ticket.TicketID}}</td>
+      <td>{{ticket.Title}}</td>
+      <td>{{ticket.AssignedToUser}}</td>
+    </tr>
+  </table>
+</div> -->
+<!-- <progressbar class="progress-striped active" value="userUpdateInterval"></progressbar> -->
