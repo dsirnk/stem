@@ -32,7 +32,7 @@ angular
         $scope.userList.push(r);
       },
       /*==========  Update user  ==========*/
-      userUpdate: function (r, user) {
+      userUpdate: function (user, r) {
         angular.extend(user, r);
       },
       /*==========  On userSelect  ==========*/
