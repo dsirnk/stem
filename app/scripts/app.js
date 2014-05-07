@@ -8,7 +8,8 @@ angular
     'ngRoute',
     'ngAnimate',
     'ui',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    // 'Genome'
   ])
   .config(function ($routeProvider) {
     $routeProvider

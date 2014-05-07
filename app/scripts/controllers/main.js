@@ -2,7 +2,7 @@
 'use strict';
 
 var genome = 'http://genome.klick.com',
-    genomeAPI = genome + '/api/',
+    genomeAPI = genome + '/api',
     genomeParams = { method: 'JSONP', params: { format: 'json', callback: 'JSON_CALLBACK' } },
     refreshInterval = 6000;
 
@@ -32,7 +32,7 @@ angular
         $scope.userList.push(r);
       },
       /*==========  Update user  ==========*/
-      userUpdate: function (r, user) {
+      userUpdate: function (user, r) {
         angular.extend(user, r);
       },
       /*==========  On userSelect  ==========*/
@@ -99,12 +99,12 @@ angular
   .factory('Genome', function ($resource) {
     return {
       Users: $resource(
-        genomeAPI + 'User/',
+        genomeAPI + '/User',
         { ForAutocompleter: true, ForGrid: true },
         { get: genomeParams }
       ),
       User: $resource(
-        genomeAPI + 'User/',
+        genomeAPI + '/User',
         { UserID: '@UserID' },
         { get: angular.extend({ transformResponse: function (r) {
             r.Entries[0].PhotoPath = genome + r.Entries[0].PhotoPath;
@@ -114,8 +114,13 @@ angular
         )}
       ),
       Tickets: $resource(
-        genomeAPI + 'Ticket/',
+        genomeAPI + '/Ticket',
         { ForAutocompleter: true, ForGrid: true },
+        { get: genomeParams }
+      ),
+      Ticket: $resource(
+        genomeAPI + '/Ticket',
+        { TicketID: '@TicketID' },
         { get: genomeParams }
       ),
     };

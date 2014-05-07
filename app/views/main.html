@@ -43,7 +43,7 @@
       <th>AssignedToUser</th>
     </tr>
     <tr ng-repeat="ticket in ticket.Entries | filter: {GroupName:'OpenForMe'} | orderBy:'GroupName':true">
-      <td>{{ticket.TicketID}}</td>
+      <td><t tooltip="left">{{ticket.TicketID}}</t></td>
       <td>{{ticket.Title}}</td>
       <td>{{ticket.AssignedToUser}}</td>
     </tr>
