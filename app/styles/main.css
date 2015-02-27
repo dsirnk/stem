@@ -1,21 +1,21 @@
-header { position: fixed; z-index: 99; top: 0; padding: 0 15px 15px; background: rgba(255, 255, 255, .9); }
-header + * { margin-top: 125px; }
+header { padding: 0 15px 15px; background: rgba(255, 255, 255, .9); }
 
 .alert .ng-scope { white-space: pre-wrap; }
 
-.user { position: relative; float: left; margin: 5px; width: 110px; height: 160px; overflow: hidden; text-align: center; transition: opacity ease-out .5s, transform ease-out .5s; }
+.user { position: relative; float: left; margin: 5px 10px; padding: 12px 0; min-width: 110px; min-height: 160px; overflow: hidden; text-align: center; transition: opacity ease-out .5s, transform ease-out .5s; }
 .user.ng-leave-active { opacity: 0; transform: scale(0); transform-origin: right top; }
 .user.ng-leave-active.prev-keydown { transform-origin: left; }
 .user.ng-leave-active.next-keydown { transform-origin: right; }
-.user img { animation: userimg ease-out 2s; }
-/*@keyframes userimg { from { opacity: 0; } }*/
-.user x { position: absolute; top: 0; right: 0; padding: 0 5px; }
-.user d,
-.user k { position: absolute; bottom:0; left: 0; width: 100%; color: black; }
-.user d { padding: 5px 0 25px; background: rgba(255, 255, 255, .75); animation: userD ease-out .5s; }
-@keyframes userD { from { bottom: -50px; opacity: 0; } }
-.user k { background: rgba(0, 0, 0, .15); font-weight: bold; transition: all linear 1.5s; animation: userK ease-out .75s; }
-@keyframes userK { from { bottom: -50px; } }
-.user k[status^='OUT'] { background: rgba(255, 255, 0, .75); }
-.user k[status^='IN'] { background: rgba(64, 255, 64, .75); }
-.user k.ng-animate { padding-top: 140px; }
+.user:before,
+.user:after { position: absolute; left: 0; width: 100%; color: black; }
+.user:before { content: attr(alt); top: 0; animation: fadeInDown ease-out .5s; }
+.user:after { content: attr(status) '\A' attr(lastseen); white-space: pre; bottom: 0; background: rgba(0, 0, 0, .15); font-weight: bold; font-size: 12px; transition: all linear 1.5s; animation: fadeInUp ease-out .75s; }
+.user[status^='IN'],
+.user[status^='OUT'] { animation: scale ease-out .5s; }
+.user[status^='IN']:after { background: rgba(64, 255, 64, .75); }
+.user[status^='OUT']:after { background: rgba(255, 255, 0, .75); }
+.user.ng-animate:after { padding-top: 140px; }
+@keyframes fadeInUp { from { bottom: -50px; opacity: 0; } }
+@keyframes fadeInDown { from { top: -50px; opacity: 0; } }
+@keyframes scale { from { transform: scale(2); } }
+.user x { position: absolute; top: 10px; right: 2px; padding: 5px; }

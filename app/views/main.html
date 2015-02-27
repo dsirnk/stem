@@ -1,37 +1,20 @@
 <header class="row clearfix">
   <h1>zenome</h1>
-  <input
+  <input class="form-control" type="text" tabindex="1" placeholder="Select User"
     ng-model="userSelect"
     typeahead="user.Name for user in user.Entries | filter: {Name:$viewValue}"
     typeahead-editable="false"
-    typeahead-on-select="userSelected($item)"
-    type="text"
-    tabindex="1"
-    placeholder="Select User"
-    class="form-control" />
+    typeahead-on-select="userSelected($item)"/>
 </header>
 <alert ng-repeat="alert in alerts" type="alert.type">{{alert.msg}}</alert>
-<ul
-  ui-sortable="userSort"
+<ul class="list-unstyled clearfix"
   ng-model="userList"
-  class="list-unstyled clearfix">
-  <li
+  ui-sortable="userSort">
+  <li class="user" tabindex="1" alt="{{user.Name}}" status="{{user.KeyscanStatus}}" lastseen="{{user.KeyscanUpdated | date: 'short'}}"
     ng-repeat="user in userList"
-    tabindex="1"
-    ui-keydown="{ 'backspace delete up left right down': 'userMove($event, $index)' }"
-    class="user">
-      <img
-        ng-src="{{user.PhotoPath}}"
-        alt="{{user.Name}}"
-        class="img-thumbnail"
-        onimageload>
-      <d>{{user.Name}}</d>
-      <k status="{{user.KeyscanStatus}}">{{user.KeyscanStatus}}</k>
-      <x
-        ng-click="userMove($event, $index)"
-        class="close">
-        &times;
-      </x>
+    ui-keydown="{ 'backspace delete up left right down': 'userMove($event, $index)' }">
+      <img class="img-thumbnail" alt="{{user.Name}}" ng-src="{{user.PhotoPath}}" onimageload>
+      <x class="close" ng-click="userMove($event, $index)">&times;</x>
   </li>
 </ul>
 <div class="panel panel-info">

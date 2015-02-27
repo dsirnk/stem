@@ -4,7 +4,7 @@
 var genome = 'http://genome.klick.com',
     genomeAPI = genome + '/api',
     genomeParams = { method: 'JSONP', params: { format: 'json', callback: 'JSON_CALLBACK' } },
-    refreshInterval = 6000;
+    refreshInterval = 1000 * 60 * 6/60;
 
 angular
   .module('zenomeApp')
@@ -81,7 +81,6 @@ angular
       }, refreshInterval),
       /*==========  Error on userGet  ==========*/
       userGetError: function(e) {
-        clearInterval($scope.userGet);
         console.log(e);
         $scope.alerts.user = {
           type: 'danger',
@@ -106,10 +105,14 @@ angular
       User: $resource(
         genomeAPI + '/User',
         { UserID: '@UserID' },
-        { get: angular.extend({ transformResponse: function (r) {
-            r.Entries[0].PhotoPath = genome + r.Entries[0].PhotoPath;
-            return r.Entries[0];
-          }},
+        {
+          get: angular.extend({
+            transformResponse: function (r) {
+              r.Entries[0].KeyscanUpdated = parseFloat(r.Entries[0].KeyscanUpdated.substr(6));
+              r.Entries[0].PhotoPath = genome + r.Entries[0].PhotoPath;
+              return r.Entries[0];
+            }
+          },
           genomeParams
         )}
       ),
