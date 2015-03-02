@@ -1,35 +1,59 @@
-<header class="row clearfix">
-  <h1>zenome</h1>
-  <input class="form-control" type="text" tabindex="1" placeholder="Select User"
-    ng-model="userSelect"
-    typeahead="user.Name for user in user.Entries | filter: {Name:$viewValue}"
-    typeahead-editable="false"
-    typeahead-on-select="userSelected($item)"/>
+<header class = "row clearfix">
+    <h1>stem</h1>
+    <input
+        ng-model            = "userSelect"
+        ng-show             = "users.Entries"
+        typeahead           = "user.Name for user in users.Entries | filter: { Name: $viewValue }"
+        typeahead-on-select = "userSelected($item)"
+        placeholder         = "Select User"
+        class               = "form-control"
+        type                = "text"
+        tabindex            = "1"/>
 </header>
-<alert ng-repeat="alert in alerts" type="alert.type">{{alert.msg}}</alert>
-<ul class="list-unstyled clearfix"
-  ng-model="userList"
-  ui-sortable="userSort">
-  <li class="user" tabindex="1" alt="{{user.Name}}" status="{{user.KeyscanStatus}}" lastseen="{{user.KeyscanUpdated | date: 'short'}}"
-    ng-repeat="user in userList"
-    ui-keydown="{ 'backspace delete up left right down': 'userMove($event, $index)' }">
-      <img class="img-thumbnail" alt="{{user.Name}}" ng-src="{{user.PhotoPath}}" onimageload>
-      <x class="close" ng-click="userMove($event, $index)">&times;</x>
-  </li>
+<alert
+    ng-repeat = "alert in alerts"
+    type      = "{{alert.type}}">
+    {{alert.msg}}
+</alert>
+<ul
+    ng-model    = "userList"
+    ui-sortable = "userSort"
+    class       = "list-unstyled clearfix">
+    <li
+        ng-repeat  = "user in userList"
+        ui-keydown = "{ 'backspace delete up left right down': 'userMove($event, $index)' }"
+        alt        = "{{user.Name}}"
+        status     = "{{user.KeyscanStatus}}"
+        lastseen   = "{{user.KeyscanUpdated | date: 'short'}}"
+        class      = "user"
+        tabindex   = "1">
+            <img onimageload
+                ng-src   = "{{user.PhotoPath}}"
+                alt      = "{{user.Name}}"
+                class    = "img-thumbnail"/>
+            <a
+                ng-show  = "user.MobileNumber"
+                href     = "tel:{{user.MobileNumber}}"
+                class    = "glyphicon glyphicon-earphone">
+            </a>
+            <x
+                ng-click = "userMove($event, $index)"
+                class    = "close">&times;</x>
+    </li>
 </ul>
-<div class="panel panel-info">
-  <div class="panel-heading">Tickets ({{(ticket.Entries | filter: {GroupName:'OpenForMe'}).length}})</div>
-  <table class="table table-striped table-responsive">
-    <tr>
-      <th>TicketID</th>
-      <th>Title</th>
-      <th>AssignedToUser</th>
-    </tr>
-    <tr ng-repeat="ticket in ticket.Entries | filter: {GroupName:'OpenForMe'} | orderBy:'GroupName':true">
-      <td><t tooltip="left">{{ticket.TicketID}}</t></td>
-      <td>{{ticket.Title}}</td>
-      <td>{{ticket.AssignedToUser}}</td>
-    </tr>
-  </table>
-<!-- <progressbar class="progress-striped active" value="userUpdateInterval"></progressbar> -->
+<div class = "panel panel-info">
+    <div class = "panel-heading">Tickets ({{(ticket.Entries | filter: {GroupName:'OpenForMe'}).length}})</div>
+    <table class = "table table-striped table-responsive">
+        <tr>
+            <th>TicketID</th>
+            <th>Title</th>
+            <th>AssignedToUser</th>
+        </tr>
+        <tr ng-repeat = "ticket in ticket.Entries | filter: {GroupName:'OpenForMe'} | orderBy:'GroupName':true">
+            <td><t tooltip = "left">{{ticket.TicketID}}</t></td>
+            <td>{{ticket.Title}}</td>
+            <td>{{ticket.AssignedToUser}}</td>
+        </tr>
+    </table>
+<!-- <progressbar class = "progress-striped active" value = "userUpdateInterval"></progressbar> -->
 </div>

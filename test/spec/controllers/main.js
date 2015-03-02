@@ -3,7 +3,7 @@
 describe('Controller: MainCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('zenomeApp'));
+  beforeEach(module('stemApp'));
 
   var MainCtrl,
     scope;
@@ -15,7 +15,7 @@ describe('Controller: MainCtrl', function () {
       $scope: scope
     });
   }));
-   
+
   it('should have a input accepting First Name or Last Name', function () {
     expect(scope.userSelected.length).toBe(0);
   });

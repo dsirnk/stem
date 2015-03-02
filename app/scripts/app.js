@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-  .module('zenomeApp', [
+  .module('stemApp', [
     'ngCookies',
     'ngResource',
     'ngSanitize',
