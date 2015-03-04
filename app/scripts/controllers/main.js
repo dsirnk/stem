@@ -8,10 +8,7 @@
  * # MainCtrl
  * Controller of the stemApp
  */
-var site = 'http://genome.klick.com',
-    siteAPI = site + '/api',
-    siteParams = { method: 'JSONP', params: { format: 'json', callback: 'JSON_CALLBACK' } },
-    refreshInterval = 1000 * 60 * 6/60;
+var refreshInterval = 1000 * 60 * 6/60;
 
 angular
     .module('stemApp')
@@ -91,6 +88,10 @@ angular
     })
     /*==========  User API Interaction  ==========*/
     .factory('Site', function ($resource) {
+        var site = 'http://genome.klick.com',
+            siteAPI = site + '/api',
+            siteParams = { method: 'JSONP', params: { format: 'json', callback: 'JSON_CALLBACK' } };
+
         return {
             You     : $resource(siteAPI + '/User/Current',
                         { ForAutocompleter: true, ForGrid: true },
@@ -123,22 +124,22 @@ angular
                         { get: siteParams }
                     ),
         };
-    });
+    })
     /*==========  Store images offline  ==========*
     angular.directive('onimageload', function () {
         return {
             restrict : 'A',
             link     : function (scope, el) {
                 el.bind('load', function () {
+                	el[0].setAttribute('crossOrigin','anonymous');
                     var c    = document.createElement('canvas');
                     var ctx  = c.getContext('2d');
-                    c.width  = el.width;
-                    c.height = el.height;
-                    ctx.drawImage(el, 0, 0);
+                    ctx.drawImage(el[0], 0, 0);
                     console.log(c.toDataURL());
                     // localStorage.userList.replace(el.attr('src'), dataURI)
                 });
             }
         };
-    });
+    })
     /*==========  _  ==========*/
+;

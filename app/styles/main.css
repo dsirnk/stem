@@ -1,4 +1,4 @@
-header { padding: 0 15px 15px; background: rgba(255, 255, 255, .9); }
+.navbar-brand img { display: inline-block; height: 20px; margin-right: 10px; }
 
 .userList { margin: 10px -10px; }
 .userList > li { position: relative; margin: 10px; overflow: hidden; box-shadow: 1px 1px 10px yellowgreen; transition: all ease-out .5s; }
