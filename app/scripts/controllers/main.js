@@ -1,6 +1,13 @@
 /*global $:false*/
 'use strict';
 
+/**
+ * @ngdoc function
+ * @name stemApp.controller:MainCtrl
+ * @description
+ * # MainCtrl
+ * Controller of the stemApp
+ */
 var site = 'http://genome.klick.com',
     siteAPI = site + '/api',
     siteParams = { method: 'JSONP', params: { format: 'json', callback: 'JSON_CALLBACK' } },

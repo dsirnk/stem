@@ -1,15 +1,23 @@
 'use strict';
 
+/**
+ * @ngdoc overview
+ * @name stemApp
+ * @description
+ * # stemApp
+ *
+ * Main module of the application.
+ */
 angular
   .module('stemApp', [
+    'ngAnimate',
     'ngCookies',
     'ngResource',
-    'ngSanitize',
     'ngRoute',
-    'ngAnimate',
-    'ui',
+    'ngSanitize',
+    'ngTouch',
     'ui.bootstrap',
-    // 'Genome'
+    'ui.sortable'
   ])
   .config(function ($routeProvider) {
     $routeProvider
