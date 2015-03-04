@@ -1,23 +1,40 @@
 header { padding: 0 15px 15px; background: rgba(255, 255, 255, .9); }
 
-.alert .ng-scope { white-space: pre-wrap; }
+.userList { margin: 10px -10px; }
+.userList > li { position: relative; margin: 10px; overflow: hidden; box-shadow: 1px 1px 10px yellowgreen; transition: all ease-out .5s; }
+.userList[type=list] > li { height: 95px; }
+.userList[type=grid] > li { float: left; min-width: 110px; min-height: 160px; text-align: center; }
+.userList > li:focus { margin: 0; }
+.userList[type=list] > li:focus { height: 115px; padding: 10px 0; }
+.userList[type=grid] > li:focus { padding: 10px; z-index: 1; transform: scale(1.5); }
+.userList > li:before,
+.userList > li:after { width: 100%; color: black; pointer-events: none; }
+.userList[type=grid] > li:before,
+.userList[type=grid] > li:after { position: absolute; left: 0; }
+.userList > li:before { content: attr(alt); background: rgba(255, 255, 255, .50); animation: fadeInDown ease-out .5s; }
+.userList > li:after { content: attr(status) '\A' attr(lastseen); display: block; white-space: pre; bottom: 0; background: rgba(255, 255, 255, .50); font-weight: bold; font-size: 12px; transition: all linear 1.5s; animation: fadeInUp ease-out .75s; }
 
-.user { position: relative; float: left; margin: 0 10px; padding: 22px 0; min-width: 110px; min-height: 160px; overflow: hidden; text-align: center; transition: opacity ease-out .5s, transform ease-out .5s; }
-.user.ng-leave-active { opacity: 0; transform: scale(0); transform-origin: right top; }
-.user.ng-leave-active.prev-keydown { transform-origin: left; }
-.user.ng-leave-active.next-keydown { transform-origin: right; }
-.user:before,
-.user:after { position: absolute; left: 0; width: 100%; color: black; }
-.user:before { content: attr(alt); top: 0; animation: fadeInDown ease-out .5s; }
-.user:after { content: attr(status) '\A' attr(lastseen); white-space: pre; bottom: 0; background: rgba(0, 0, 0, .15); font-weight: bold; font-size: 12px; transition: all linear 1.5s; animation: fadeInUp ease-out .75s; }
-.user[status^=IN],
-.user[status^=OUT] { animation: scale ease-out .5s; }
-.user[status^=IN]:after { background: rgba(64, 255, 64, .75); }
-.user[status^=OUT]:after { background: rgba(255, 255, 0, .75); }
-.user.ng-animate:after { }
-@keyframes fadeInUp { from { bottom: -50px; opacity: 0; } }
-@keyframes fadeInDown { from { top: -50px; opacity: 0; } }
-@keyframes scale { from { transform: scale(2); } }
+.userList > li[status^=IN],
+.userList > li[status^=OUT] { animationx: bounce ease-out .5s; }
+.userList > li[status^=IN]:focus { outline-color: rgba(64,255,64, .75); }
+.userList > li[status^=IN]:after { background: rgba(64, 255, 64, .75); }
+.userList > li[status^=OUT]:focus { outline-color: rgba(255, 255, 0, .75); }
+.userList > li[status^=OUT]:after { background: rgba(255, 255, 0, .75); }
 
-.user a[href^=tel] { padding: 20px; position: absolute; top: 55%; left: 22px; background: rgba(255, 255, 255, 0.5); border-radius: 50%; box-shadow: 1px 1px 15px; font-size: 25px; color: green; }
-.user x { position: absolute; top: 10px; right: 2px; padding: 5px; }
+.userList > li.ng-leave-active { opacity: 0; transform: scale(0); }
+.userList > li.ng-animate:after { }
+
+.userList[type=list] > li img { float: left; max-height: 100%; margin-right: 10px; }
+.userList > li a.glyphicon { padding: 10px; background: rgba(255, 255, 255, 0.5); border-radius: 50%; box-shadow: 1px 1px 15px; font-size: 20px; transition: all ease-out 0.5s; }
+.userList[type=list] > li a.glyphicon { margin: -35px 2% 0; float: right; clear: left; z-index: 1; }
+.userList[type=list] > li a.glyphicon:first-of-type { margin-right: 5%; }
+.userList[type=grid] > li a.glyphicon { position: absolute; top: 50%; left: 50%; margin: 15px -20px; visibility: hidden; opacity: 0; }
+.userList[type=grid] > li a[href^=tel],
+.userList[type=grid] > li:focus a.glyphicon { visibility: visible; opacity: 1; }
+.userList[type=grid] > li:focus a.glyphicon { margin: -20px; z-index: 1; }
+.userList[type=grid] > li:focus a[href^=tel] { margin-top: 25px; }
+.userList[type=grid] > li:focus a[href^=mailto] { margin-top: -65px; }
+.userList[type=grid] > li:focus a[href^=sms] { margin-left: -65px; }
+.userList[type=grid] > li:focus a[href^=gtalk] { margin-left: 25px; }
+.userList > li x { position: absolute; top: 0; right: 0; padding: 0 5px; visibility: hidden; opacity: 0; transition: all ease-out .5s; }
+.userList > li:focus x { visibility: visible; opacity: 1; }

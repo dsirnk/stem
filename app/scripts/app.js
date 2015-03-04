@@ -15,10 +15,13 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch',
     'ui.bootstrap',
-    'ui.sortable'
-  ])
+    'ui.sortable',
+    'ui.utils'
+  ],
+  function ($compileProvider) {
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(mailto|tel|sms|gtalk||):/);
+  })
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {

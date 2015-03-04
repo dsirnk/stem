@@ -365,6 +365,19 @@ module.exports = function (grunt) {
       }
     },
 
+    'ftp-deploy': {
+      build: {
+        auth: {
+          host: 'thegiantmobilestore.com',
+          port: 21,
+          authKey: 'key1'
+        },
+        src: '<%= yeoman.dist %>',
+        dest: 'stage/stem',
+        exclusions: ['path/to/source/folder/**/.DS_Store', 'path/to/source/folder/**/Thumbs.db', 'path/to/dist/tmp']
+      }
+    },
+
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
@@ -433,7 +446,8 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'ftp-deploy'
   ]);
 
   grunt.registerTask('default', [

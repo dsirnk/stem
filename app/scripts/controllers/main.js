@@ -25,13 +25,18 @@ angular
             users       : Site.Users.get(),
             // users    : ComboUsersData,
             userList    : angular.fromJson(localStorage.userList || '[]'),
+            userListType: localStorage.userListType || 'grid',
 
             /*==========  Event Handlers  ==========*/
 
             /*==========  Add user on userSelect  ==========*/
             userAdd     : function(user) { $scope.userList.push(user); },
             /*==========  Update user  ==========*/
-            userUpdate  : function (user, r) { if(!angular.equals(user, r)) { angular.extend(user, r); } },
+            userUpdate  : function (user, r) {
+            				$scope.alerts = {};
+			            	if(!angular.equals(user, r)) { angular.extend(user, r); }
+			            	// else { console.log('Skipped: ' + r.Name); }
+			            },
             /*==========  On userSelect  ==========*/
             userSelected: function ($item) {
                             var user = { UserID: $item.UserID };
@@ -56,7 +61,6 @@ angular
                         },
             /*==========  Error on userGet  ==========*/
             userError: function(e) {
-                            console.log(e);
                             $scope.alerts.user = {
                                 type : 'danger',
                                 msg  : 'Couldn\'t connect to the API.\n' +
@@ -75,7 +79,7 @@ angular
             /*==========  Sort userList (sortable config)  ==========*/
             userSort    : { containment: 'parent', cursor: 'move', opacity: 0.75, revert: 250, tolerance: 'pointer' },
             /*==========  Get List of Tickets  ==========*/
-            // ticket      : Site.Tickets.get()
+            ticket      : Site.Tickets.get()
         });
 
         /*==========  Watch userList for changes to sync localStorage  ==========*/
@@ -90,7 +94,10 @@ angular
         return {
             You     : $resource(siteAPI + '/User/Current',
                         { ForAutocompleter: true, ForGrid: true },
-                        { get: siteParams }
+                        { get: angular.extend({ transformResponse: function (r) {
+                                return r.Entries[0];
+                            }
+                        }, siteParams)}
                     ),
             Users   : $resource(siteAPI + '/User',
                         { ForAutocompleter: true, ForGrid: true },
