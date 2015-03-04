@@ -24,7 +24,7 @@
     <li
         ng-repeat     = "user in userList"
         ui-keydown    = "{ 'backspace delete up left right down': 'userMove($event, $index)' }"
-        alt           = "{{user.Name}}"
+        name          = "{{user.Name}}"
         status        = "{{user.KeyscanStatus}}"
         lastseen      = "{{user.KeyscanUpdated | date: 'short'}}"
         onclick       = "this.focus()"

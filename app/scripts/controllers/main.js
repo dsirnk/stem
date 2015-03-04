@@ -51,7 +51,7 @@ angular
             /*==========  Remove from userList  ==========*/
             userMove    : function ($event, $item) {
                             $event.preventDefault();
-                            var user     = $($event.target).closest('.user'),
+                            var user     = $($event.target).closest('li'),
                                 prevNext = !!~[8,37,38].indexOf($event.keyCode) ? 'prev' : 'next';
                             user[prevNext]().focus();
                             if (!!~[8,46, undefined].indexOf($event.keyCode)) {

@@ -11,7 +11,7 @@ header { padding: 0 15px 15px; background: rgba(255, 255, 255, .9); }
 .userList > li:after { width: 100%; color: black; pointer-events: none; }
 .userList[type=grid] > li:before,
 .userList[type=grid] > li:after { position: absolute; left: 0; }
-.userList > li:before { content: attr(alt); background: rgba(255, 255, 255, .50); animation: fadeInDown ease-out .5s; }
+.userList > li:before { content: attr(name); background: rgba(255, 255, 255, .50); animation: fadeInDown ease-out .5s; }
 .userList > li:after { content: attr(status) '\A' attr(lastseen); display: block; white-space: pre; bottom: 0; background: rgba(255, 255, 255, .50); font-weight: bold; font-size: 12px; transition: all linear 1.5s; animation: fadeInUp ease-out .75s; }
 
 .userList > li[status^=IN],
@@ -21,7 +21,9 @@ header { padding: 0 15px 15px; background: rgba(255, 255, 255, .9); }
 .userList > li[status^=OUT]:focus { outline-color: rgba(255, 255, 0, .75); }
 .userList > li[status^=OUT]:after { background: rgba(255, 255, 0, .75); }
 
-.userList > li.ng-leave-active { opacity: 0; transform: scale(0); }
+.userList > li.ng-leave-active { opacity: 0; transform: scale(0); transform-origin: right top; }
+.userList > li.ng-leave-active.prev-keydown { transform-origin: left; }
+.userList > li.ng-leave-active.next-keydown { transform-origin: right; }
 .userList > li.ng-animate:after { }
 
 .userList[type=list] > li img { float: left; max-height: 100%; margin-right: 10px; }
