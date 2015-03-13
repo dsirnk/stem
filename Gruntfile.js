@@ -456,7 +456,7 @@ module.exports = function (grunt) {
     'htmlmin',
     'exec',
     'ftp-deploy',
-    'clean:dist'
+    // 'clean:dist'
   ]);
 
   grunt.registerTask('default', [
