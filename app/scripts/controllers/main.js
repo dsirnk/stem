@@ -32,8 +32,10 @@ angular
             /*==========  Update user  ==========*/
             userUpdate  : function (user, r) {
             				$scope.alerts = {};
-			            	if(!angular.equals(user, r)) { angular.extend(user, r); }
-			            	// else { console.log('Skipped: ' + r.Name); }
+			            	if(user.KeyscanUpdated !== r.KeyscanUpdated) {
+                                user.KeyscanMoment = moment(r.KeyscanUpdated).calendar();
+                                console.log('Updates Status of: ' + user.Name);
+                            }
 			            },
             /*==========  On userSelect  ==========*/
             userSelected: function ($item) {
@@ -110,7 +112,6 @@ angular
                         { get: angular.extend({ transformResponse: function (r) {
                                 // r.Entries[0].KeyscanUpdated    = (new Date()).getTime();
                                 // r.Entries[0].KeyscanStatus     = ['NOTIN', 'IN', 'OUT', 'IN2', 'OUT2', 'IN3', 'OUT3', 'IN4', 'OUT4', 'IN7', 'OUT7'][Math.floor((Math.random() * 10 + 1))]
-                                r.Entries[0].KeyscanMoment     = moment(r.Entries[0].KeyscanUpdated).calendar(),
                                 r.Entries[0].PhotoPath         = site + r.Entries[0].PhotoPath;
                                 return r.Entries[0];
                             }
