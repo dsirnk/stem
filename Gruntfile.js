@@ -367,7 +367,7 @@ module.exports = function (grunt) {
 
     exec: {
       deploy: {
-        cmd: 'git subtree push --prefix <%= yeoman.dist %> origin gh-pages'
+        cmd: 'git add dist -f && git commit -m "deploy" && git subtree push --prefix <%= yeoman.dist %> origin gh-pages'
       }
     },
 
@@ -454,9 +454,9 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
+    'exec',
     'ftp-deploy',
-    // 'exec',
-    // 'clean:dist'
+    'clean:dist'
   ]);
 
   grunt.registerTask('default', [
