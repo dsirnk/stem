@@ -26,23 +26,29 @@
         ui-keydown    = "{ 'backspace delete up left right down': 'userMove($event, $index)' }"
         onclick       = "this.focus()"
         tabindex      = "1">
-            <name>{{user.Name}}</name>
-            <img onimageload
-                ng-src   = "{{user.PhotoPath}}"/>
-            <scan>{{user.KeyscanStatus}}<time>{{user.KeyscanMoment}}</time></scan>
+            <img onimageload ng-src = "{{user.PhotoPath}}"/>
+            <info>
+                <team>{{user.BusinessUnitName}}</team>
+                <name>{{user.Name}}</name>
+                <role>{{user.Title}}</role>
+            </info>
+            <scan>
+                <status>{{user.KeyscanStatus}}</status>
+                <time>{{user.KeyscanMoment}}</time>
+            </scan>
             <connect>
                 <a
-                    ng-show  = "user.Email"
-                    href     = "mailto:{{user.Email}}"
-                    class    = "glyphicon glyphicon-envelope"></a>
+                    ng-show  = "user.MobileNumber"
+                    href     = "gtalk:chat?jid={{user.Email}}&amp;from_jid={{you.Email}}"
+                    class    = "glyphicon glyphicon-send"></a>
                 <a
                     ng-show  = "user.MobileNumber"
                     href     = "sms:{{user.MobileNumber}}"
                     class    = "glyphicon glyphicon-comment"></a>
                 <a
-                    ng-show  = "user.MobileNumber"
-                    href     = "gtalk:chat?jid={{user.Email}}&amp;from_jid={{you.Email}}"
-                    class    = "glyphicon glyphicon-send"></a>
+                    ng-show  = "user.Email"
+                    href     = "mailto:{{user.Email}}"
+                    class    = "glyphicon glyphicon-envelope"></a>
                 <a
                     ng-show  = "user.MobileNumber"
                     href     = "tel:{{user.MobileNumber}}"

@@ -52,7 +52,7 @@ angular
             /*==========  Remove from userList  ==========*/
             userMove    : function ($event, $item) {
                             $event.preventDefault();
-                            var user     = $($event.target).closest('li'),
+                            var user     = $($event.target).closest('user'),
                                 prevNext = !!~[8,37,38].indexOf($event.keyCode) ? 'prev' : 'next';
                             user[prevNext]().focus();
                             if (!!~[8,46, undefined].indexOf($event.keyCode)) {
@@ -111,8 +111,7 @@ angular
             User    : $resource(siteAPI + '/User',
                         { UserID: '@UserID' },
                         { get: angular.extend({ transformResponse: function (r) {
-                                r.Entries[0].KeyscanUpdated    = (new Date()).getTime();
-                                r.Entries[0].KeyscanStatus     = ['NOTIN', 'IN', 'OUT', 'IN2', 'OUT2', 'IN3', 'OUT3', 'IN4', 'OUT4', 'IN7', 'OUT7'][Math.floor((Math.random() * 10 + 1))]
+                                // if (Math.random() > 0.95) angular.extend(r.Entries[0], { KeyscanUpdated: (new Date()).getTime(), KeyscanStatus: ['NOTIN', 'IN', 'OUT', 'IN2', 'OUT2', 'IN3', 'OUT3', 'IN4', 'OUT4', 'IN7', 'OUT7'][Math.floor((Math.random() * 10 + 1))] });
                                 r.Entries[0].PhotoPath         = site + r.Entries[0].PhotoPath;
                                 return r.Entries[0];
                             }

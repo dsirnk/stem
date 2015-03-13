@@ -3,53 +3,66 @@
 userList { display: block; margin: 10px -15px; }
 userList[type=grid] { text-align: center; }
 
-userList > user { position: relative; display: inline-block; margin: 10px; box-shadow: 1px 1px 10px yellowgreen; font: normal 12px/1.2 Arial; vertical-align: top; transition: all ease-out .15s; }
-
-userList[type=list] > user:after { content: ''; display: block; clear: both; }
-userList[type=list] > user:focus { margin-left: 0; margin-right: 0; }
+userList > user { position: relative; display: inline-block; margin: 10px; outline: 0; font: normal 11px/1.3 Arial; vertical-align: top; transition: all ease-out .15s; }
 
 userList[type=grid] > user { min-width: 100px; min-height: 150px; }
 userList[type=grid] > user:focus { z-index: 1; transform: scale(1.5); }
 
 userList[type=list] > user { display: block; }
-userList[type=list] > user:focus { font-size: 14px; }
-userList[type=list] > user img { float: left; height: 95px; margin-right: 10px; transition: transform ease-out .15s; }
+userList[type=list] > user:focus { margin-left: 0; margin-right: 0; }
+userList[type=list] > user:after { content: ''; display: block; clear: both; }
+userList[type=list] > user img { float: left; height: 95px; margin-right: 10px; transition: all ease-out .15s; }
 userList[type=list] > user:focus img { height: 125px; }
 
-userList > user name,
-userList > user scan { pointer-events: none; }
-userList > user name { background: rgba(255, 255, 255, .50); animation: fadeInDown ease-out .5s; }
-userList > user scan { display: block; bottom: 0; background: rgba(255, 255, 255, .50); font-weight: bold; animation: fadeInUp ease-out .75s; }
-userList > user scan time { display: block; font-weight: normal; }
+userList > user info,
+userList > user scan,
+userList > user info > *,
+userList > user scan > * { display: block; pointer-events: none; }
+userList > user info { background: rgba(255, 255, 255, .50); animation: fadeInDown ease-out .5s; }
+userList > user scan { bottom: 0; background: rgba(255, 255, 255, .50); animation: fadeInUp ease-out .75s; }
+userList > user scan status { font: bold medium Arial; }
 
-userList[type=grid] > user name,
+userList[type=grid] > user info,
 userList[type=grid] > user scan { position: absolute; left: 0; right: 0; }
-userList[type=list] > user name { padding-right: 10px; }
+userList[type=grid] > user info { top: 0; }
+userList[type=grid] > user info > *,
+userList[type=grid] > user scan > * { margin: 0 -15px; }
+userList[type=grid] > user info role,
+userList[type=grid] > user info team { max-height: 0; overflow: hidden; }
+
+userList[type=list] > user info,
+userList[type=list] > user scan { padding-right: 10px; clear: right; }
+userList[type=list] > user scan status,
+userList[type=list] > user scan time { display: inline-block; margin: 0; }
+userList[type=list] > user info team,
+userList[type=list] > user info role,
+userList[type=list] > user scan time { float: right; }
+userList[type=list] > user:focus info name { font-size: 14px; line-height: 14px; }
 
 userList > user[status^=IN],
 userList > user[status^=OUT] { animationx: bounce ease-out .5s; }
-userList > user[status^=IN]:focus { outline-color: rgba(64,255,64, .75); }
+userList > user[status^=IN] { box-shadow: 1px 1px 10px rgba(64,255,64, .75); }
 userList > user[status^=IN] scan { background: rgba(64, 255, 64, .75); }
-userList > user[status^=OUT]:focus { outline-color: rgba(255, 255, 0, .75); }
+userList > user[status^=OUT] { box-shadow: 1px 1px 10px rgba(255, 255, 0, .75); }
 userList > user[status^=OUT] scan { background: rgba(255, 255, 0, .75); }
 
-userList > user.ng-leave-active { opacity: 0; transform: scale(0); transform-origin: right top; }
+userList > user.ng-leave-active { opacity: 0; transform: scale(0); }
 userList > user.ng-leave-active.prev-keydown { transform-origin: left; }
 userList > user.ng-leave-active.next-keydown { transform-origin: right; }
 userList > user.ng-animate scan { }
 
-userList > user connect { float: right; }
-userList > user connect a.glyphicon { padding: 10px; background: rgba(255, 255, 255, 0.5); border-radius: 50%; box-shadow: 1px 1px 15px; font-size: 20px; transition: all ease-out .5s; }
+userList > user connect a.glyphicon { padding: 10px; background: rgba(255, 255, 255, 0.5); border-radius: 50%; box-shadow: 1px 1px 15px; font-size: 20px; transition: all ease-out .25s; }
 
+userList[type=list] > user connect { position: absolute; right: 0; }
 userList[type=list] > user connect a.glyphicon { float: right; margin: 5px; }
-userList[type=list] > user:focus connect a.glyphicon { margin: 9px; }
-userList[type=grid] > user connect a.glyphicon { position: absolute; top: 50%; left: 50%; margin: 0 -20px; visibility: hidden; opacity: 0; }
+userList[type=list] > user:focus connect a.glyphicon { margin: 10px; padding: 15px; }
+userList[type=grid] > user connect a.glyphicon { position: absolute; top: 50%; left: 50%; margin-left: -60%; visibility: hidden; opacity: 0; }
 userList[type=grid] > user connect a[href^=tel],
-userList[type=grid] > user:focus connect a.glyphicon { visibility: visible; opacity: 0.75; }
-userList[type=grid] > user:focus connect a.glyphicon { margin: -20px; opacity: 1; z-index: 1; }
-userList[type=grid] > user:focus connect a[href^=tel] { margin-top: 25px; }
-userList[type=grid] > user:focus connect a[href^=mailto] { margin-top: -65px; }
-userList[type=grid] > user:focus connect a[href^=sms] { margin-left: -65px; }
-userList[type=grid] > user:focus connect a[href^=gtalk] { margin-left: 25px; }
+userList[type=grid] > user:focus connect a.glyphicon { visibility: visible; opacity: 1; }
+userList[type=grid] > user:focus connect a.glyphicon { margin: -20px; }
+userList[type=grid] > user:focus connect a[href^=tel] { margin-left: -65px; }
+userList[type=grid] > user:focus connect a[href^=mailto] { margin-top: 25px; }
+userList[type=grid] > user:focus connect a[href^=sms] { margin-left: 25px; }
+userList[type=grid] > user:focus connect a[href^=gtalk] { margin-top: -65px; }
 userList > user x { position: absolute; top: 0; right: 0; padding: 0 5px; visibility: hidden; opacity: 0; }
 userList > user:focus x { visibility: visible; opacity: 1; }
