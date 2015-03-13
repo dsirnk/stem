@@ -33,8 +33,9 @@ angular
             userUpdate  : function (user, r) {
             				$scope.alerts = {};
 			            	if(user.KeyscanUpdated !== r.KeyscanUpdated) {
-                                user.KeyscanMoment = moment(r.KeyscanUpdated).calendar();
-                                console.log('Updates Status of: ' + user.Name);
+                                r.KeyscanMoment = moment(r.KeyscanUpdated).calendar();
+                                angular.extend(user, r);
+                                console.log('Updated Status of: ' + user.Name);
                             }
 			            },
             /*==========  On userSelect  ==========*/
@@ -110,8 +111,8 @@ angular
             User    : $resource(siteAPI + '/User',
                         { UserID: '@UserID' },
                         { get: angular.extend({ transformResponse: function (r) {
-                                // r.Entries[0].KeyscanUpdated    = (new Date()).getTime();
-                                // r.Entries[0].KeyscanStatus     = ['NOTIN', 'IN', 'OUT', 'IN2', 'OUT2', 'IN3', 'OUT3', 'IN4', 'OUT4', 'IN7', 'OUT7'][Math.floor((Math.random() * 10 + 1))]
+                                r.Entries[0].KeyscanUpdated    = (new Date()).getTime();
+                                r.Entries[0].KeyscanStatus     = ['NOTIN', 'IN', 'OUT', 'IN2', 'OUT2', 'IN3', 'OUT3', 'IN4', 'OUT4', 'IN7', 'OUT7'][Math.floor((Math.random() * 10 + 1))]
                                 r.Entries[0].PhotoPath         = site + r.Entries[0].PhotoPath;
                                 return r.Entries[0];
                             }
