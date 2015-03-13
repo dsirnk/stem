@@ -16,6 +16,7 @@ angular
         angular.extend($scope, {
             /*==========  Initialize scope variables  ==========*/
             alerts      : {},
+            moment      : moment,
 
             /*==========  Get List of Users  ==========*/
             you         : Site.You.get(),
@@ -57,7 +58,7 @@ angular
                             }
                         },
             /*==========  Error on userGet  ==========*/
-            userError: function(e) {
+            userError: function() {
                             $scope.alerts.user = {
                                 type : 'danger',
                                 msg  : 'Couldn\'t connect to the API.\n' +
@@ -107,9 +108,9 @@ angular
             User    : $resource(siteAPI + '/User',
                         { UserID: '@UserID' },
                         { get: angular.extend({ transformResponse: function (r) {
-                                r.Entries[0].KeyscanUpdated    = parseFloat(r.Entries[0].KeyscanUpdated.substr(6));
                                 // r.Entries[0].KeyscanUpdated    = (new Date()).getTime();
                                 // r.Entries[0].KeyscanStatus     = ['NOTIN', 'IN', 'OUT', 'IN2', 'OUT2', 'IN3', 'OUT3', 'IN4', 'OUT4', 'IN7', 'OUT7'][Math.floor((Math.random() * 10 + 1))]
+                                r.Entries[0].KeyscanMoment     = moment(r.Entries[0].KeyscanUpdated).calendar(),
                                 r.Entries[0].PhotoPath         = site + r.Entries[0].PhotoPath;
                                 return r.Entries[0];
                             }
@@ -126,19 +127,19 @@ angular
         };
     })
     /*==========  Store images offline  ==========*
-    angular.directive('onimageload', function () {
+    .directive('onimageload', function () {
         return {
-            restrict : 'A',
-            link     : function (scope, el) {
-                el.bind('load', function () {
-                	el[0].setAttribute('crossOrigin','anonymous');
-                    var c    = document.createElement('canvas');
-                    var ctx  = c.getContext('2d');
-                    ctx.drawImage(el[0], 0, 0);
-                    console.log(c.toDataURL());
-                    // localStorage.userList.replace(el.attr('src'), dataURI)
-                });
-            }
+            restrict :  'A',
+            link     :  function (scope, el) {
+                            el.bind('load', function () {
+                            	el[0].setAttribute('crossOrigin','anonymous');
+                                var c    = document.createElement('canvas');
+                                var ctx  = c.getContext('2d');
+                                ctx.drawImage(el[0], 0, 0);
+                                console.log(c.toDataURL());
+                                // localStorage.userList.replace(el.attr('src'), dataURI)
+                            });
+                        }
         };
     })
     /*==========  _  ==========*/

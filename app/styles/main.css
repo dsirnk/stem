@@ -1,42 +1,55 @@
 .navbar-brand img { display: inline-block; height: 20px; margin-right: 10px; }
 
-.userList { margin: 10px -10px; }
-.userList > li { position: relative; margin: 10px; overflow: hidden; box-shadow: 1px 1px 10px yellowgreen; transition: all ease-out .5s; }
-.userList[type=list] > li { height: 95px; }
-.userList[type=grid] > li { float: left; min-width: 110px; min-height: 160px; text-align: center; }
-.userList > li:focus { margin: 0; }
-.userList[type=list] > li:focus { height: 115px; padding: 10px 0; }
-.userList[type=grid] > li:focus { padding: 10px; z-index: 1; transform: scale(1.5); }
-.userList > li:before,
-.userList > li:after { width: 100%; color: black; pointer-events: none; }
-.userList[type=grid] > li:before,
-.userList[type=grid] > li:after { position: absolute; left: 0; }
-.userList > li:before { content: attr(name); background: rgba(255, 255, 255, .50); animation: fadeInDown ease-out .5s; }
-.userList > li:after { content: attr(status) '\A' attr(lastseen); display: block; white-space: pre; bottom: 0; background: rgba(255, 255, 255, .50); font-weight: bold; font-size: 12px; transition: all linear 1.5s; animation: fadeInUp ease-out .75s; }
+userList { display: block; margin: 10px -15px; }
+userList[type=grid] { text-align: center; }
 
-.userList > li[status^=IN],
-.userList > li[status^=OUT] { animationx: bounce ease-out .5s; }
-.userList > li[status^=IN]:focus { outline-color: rgba(64,255,64, .75); }
-.userList > li[status^=IN]:after { background: rgba(64, 255, 64, .75); }
-.userList > li[status^=OUT]:focus { outline-color: rgba(255, 255, 0, .75); }
-.userList > li[status^=OUT]:after { background: rgba(255, 255, 0, .75); }
+userList > user { position: relative; display: inline-block; margin: 10px; box-shadow: 1px 1px 10px yellowgreen; font: normal 12px/1.2 Arial; vertical-align: top; transition: all ease-out .15s; }
 
-.userList > li.ng-leave-active { opacity: 0; transform: scale(0); transform-origin: right top; }
-.userList > li.ng-leave-active.prev-keydown { transform-origin: left; }
-.userList > li.ng-leave-active.next-keydown { transform-origin: right; }
-.userList > li.ng-animate:after { }
+userList[type=list] > user:after { content: ''; display: block; clear: both; }
+userList[type=list] > user:focus { margin-left: 0; margin-right: 0; }
 
-.userList[type=list] > li img { float: left; max-height: 100%; margin-right: 10px; }
-.userList > li a.glyphicon { padding: 10px; background: rgba(255, 255, 255, 0.5); border-radius: 50%; box-shadow: 1px 1px 15px; font-size: 20px; transition: all ease-out 0.5s; }
-.userList[type=list] > li a.glyphicon { margin: -35px 2% 0; float: right; clear: left; z-index: 1; }
-.userList[type=list] > li a.glyphicon:first-of-type { margin-right: 5%; }
-.userList[type=grid] > li a.glyphicon { position: absolute; top: 50%; left: 50%; margin: 15px -20px; visibility: hidden; opacity: 0; }
-.userList[type=grid] > li a[href^=tel],
-.userList[type=grid] > li:focus a.glyphicon { visibility: visible; opacity: 1; }
-.userList[type=grid] > li:focus a.glyphicon { margin: -20px; z-index: 1; }
-.userList[type=grid] > li:focus a[href^=tel] { margin-top: 25px; }
-.userList[type=grid] > li:focus a[href^=mailto] { margin-top: -65px; }
-.userList[type=grid] > li:focus a[href^=sms] { margin-left: -65px; }
-.userList[type=grid] > li:focus a[href^=gtalk] { margin-left: 25px; }
-.userList > li x { position: absolute; top: 0; right: 0; padding: 0 5px; visibility: hidden; opacity: 0; transition: all ease-out .5s; }
-.userList > li:focus x { visibility: visible; opacity: 1; }
+userList[type=grid] > user { min-width: 100px; min-height: 150px; }
+userList[type=grid] > user:focus { z-index: 1; transform: scale(1.5); }
+
+userList[type=list] > user { display: block; }
+userList[type=list] > user:focus { font-size: 14px; }
+userList[type=list] > user img { float: left; height: 95px; margin-right: 10px; transition: transform ease-out .15s; }
+userList[type=list] > user:focus img { height: 125px; }
+
+userList > user name,
+userList > user scan { pointer-events: none; }
+userList > user name { background: rgba(255, 255, 255, .50); animation: fadeInDown ease-out .5s; }
+userList > user scan { display: block; bottom: 0; background: rgba(255, 255, 255, .50); font-weight: bold; animation: fadeInUp ease-out .75s; }
+userList > user scan time { display: block; font-weight: normal; }
+
+userList[type=grid] > user name,
+userList[type=grid] > user scan { position: absolute; left: 0; right: 0; }
+userList[type=list] > user name { padding-right: 10px; }
+
+userList > user[status^=IN],
+userList > user[status^=OUT] { animationx: bounce ease-out .5s; }
+userList > user[status^=IN]:focus { outline-color: rgba(64,255,64, .75); }
+userList > user[status^=IN] scan { background: rgba(64, 255, 64, .75); }
+userList > user[status^=OUT]:focus { outline-color: rgba(255, 255, 0, .75); }
+userList > user[status^=OUT] scan { background: rgba(255, 255, 0, .75); }
+
+userList > user.ng-leave-active { opacity: 0; transform: scale(0); transform-origin: right top; }
+userList > user.ng-leave-active.prev-keydown { transform-origin: left; }
+userList > user.ng-leave-active.next-keydown { transform-origin: right; }
+userList > user.ng-animate scan { }
+
+userList > user connect { float: right; }
+userList > user connect a.glyphicon { padding: 10px; background: rgba(255, 255, 255, 0.5); border-radius: 50%; box-shadow: 1px 1px 15px; font-size: 20px; transition: all ease-out .5s; }
+
+userList[type=list] > user connect a.glyphicon { float: right; margin: 5px; }
+userList[type=list] > user:focus connect a.glyphicon { margin: 9px; }
+userList[type=grid] > user connect a.glyphicon { position: absolute; top: 50%; left: 50%; margin: 0 -20px; visibility: hidden; opacity: 0; }
+userList[type=grid] > user connect a[href^=tel],
+userList[type=grid] > user:focus connect a.glyphicon { visibility: visible; opacity: 0.75; }
+userList[type=grid] > user:focus connect a.glyphicon { margin: -20px; opacity: 1; z-index: 1; }
+userList[type=grid] > user:focus connect a[href^=tel] { margin-top: 25px; }
+userList[type=grid] > user:focus connect a[href^=mailto] { margin-top: -65px; }
+userList[type=grid] > user:focus connect a[href^=sms] { margin-left: -65px; }
+userList[type=grid] > user:focus connect a[href^=gtalk] { margin-left: 25px; }
+userList > user x { position: absolute; top: 0; right: 0; padding: 0 5px; visibility: hidden; opacity: 0; }
+userList > user:focus x { visibility: visible; opacity: 1; }

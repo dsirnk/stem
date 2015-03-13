@@ -1,8 +1,8 @@
 <nav class="navbar navbar-inverse">
     <a class="navbar-brand" href="#"><img src="apple-touch-icon.png" alt="">Stem</a>
     <span class="pull-right">
-        <a class="btn glyphicon glyphicon-th-large" onclick="localStorage.userListType = 'grid'; document.querySelector('.userList').setAttribute('type','grid')"></a>
-        <a class="btn glyphicon glyphicon-th-list" onclick="localStorage.userListType = 'list'; document.querySelector('.userList').setAttribute('type','list')"></a>
+        <a class="btn glyphicon glyphicon-th-large" onclick="localStorage.userListType = 'grid'; document.querySelector('userList').setAttribute('type','grid')"></a>
+        <a class="btn glyphicon glyphicon-th-list" onclick="localStorage.userListType = 'list'; document.querySelector('userList').setAttribute('type','list')"></a>
     </span>
 </nav>
 
@@ -16,41 +16,41 @@
     class               = "form-control"
     type                = "text"
     tabindex            = "1"/>
-<ul
+<userList
     ng-model    = "userList"
     ui-sortable = "userSort"
-    type        = "{{userListType}}"
-    class       = "list-unstyled userList clearfix">
-    <li
+    type        = "{{userListType}}">
+    <user
         ng-repeat     = "user in userList"
-        ui-keydown    = "{ 'backspace delete up left right down': 'userMove($event, $index)' }"
-        name          = "{{user.Name}}"
         status        = "{{user.KeyscanStatus}}"
-        lastseen      = "{{user.KeyscanUpdated | date: 'short'}}"
+        ui-keydown    = "{ 'backspace delete up left right down': 'userMove($event, $index)' }"
         onclick       = "this.focus()"
         tabindex      = "1">
+            <name>{{user.Name}}</name>
             <img onimageload
-                ng-src   = "{{user.PhotoPath}}"
-                class    = "img-thumbnail"/>
-            <a
-                ng-show  = "user.Email"
-                href     = "mailto:{{user.Email}}"
-                class    = "glyphicon glyphicon-envelope"></a>
-            <a
-                ng-show  = "user.MobileNumber"
-                href     = "sms:{{user.MobileNumber}}"
-                class    = "glyphicon glyphicon-comment"></a>
-            <a
-                ng-show  = "user.MobileNumber"
-                href     = "gtalk:chat?jid={{user.Email}}&amp;from_jid={{you.Email}}"
-                class    = "glyphicon glyphicon-send"></a>
-            <a
-                ng-show  = "user.MobileNumber"
-                href     = "tel:{{user.MobileNumber}}"
-                class    = "glyphicon glyphicon-earphone"></a>
-            <x ng-click = "userMove($event, $index)">&times;</x>
-    </li>
-</ul>
+                ng-src   = "{{user.PhotoPath}}"/>
+            <scan>{{user.KeyscanStatus}}<time>{{user.KeyscanMoment}}</time></scan>
+            <connect>
+                <a
+                    ng-show  = "user.Email"
+                    href     = "mailto:{{user.Email}}"
+                    class    = "glyphicon glyphicon-envelope"></a>
+                <a
+                    ng-show  = "user.MobileNumber"
+                    href     = "sms:{{user.MobileNumber}}"
+                    class    = "glyphicon glyphicon-comment"></a>
+                <a
+                    ng-show  = "user.MobileNumber"
+                    href     = "gtalk:chat?jid={{user.Email}}&amp;from_jid={{you.Email}}"
+                    class    = "glyphicon glyphicon-send"></a>
+                <a
+                    ng-show  = "user.MobileNumber"
+                    href     = "tel:{{user.MobileNumber}}"
+                    class    = "glyphicon glyphicon-earphone"></a>
+            </connect>
+            <x ng-click  = "userMove($event, $index)">&times;</x>
+    </user>
+</userList>
 <div ng-show = "ticket.Entries" class = "panel panel-info">
     <div class = "panel-heading">Tickets ({{(ticket.Entries | filter: {GroupName:'OpenForMe'}).length}})</div>
     <table class = "table table-striped table-responsive">
