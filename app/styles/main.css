@@ -66,3 +66,14 @@ userList[type=grid] > user:focus connect a[href^=sms] { margin-left: 25px; }
 userList[type=grid] > user:focus connect a[href^=gtalk] { margin-top: -65px; }
 userList > user x { position: absolute; top: 0; right: 0; padding: 0 5px; visibility: hidden; opacity: 0; }
 userList > user:focus x { visibility: visible; opacity: 1; }
+
+ticketList,
+ticketList > ticket,
+ticketList > ticket > *,
+ticketList > ticket > info title { display: block; }
+
+ticketList > ticket { margin: 15px auto; }
+ticketList > ticket info { margin-bottom: 5px; }
+ticketList > ticket info id { font: bold medium Arial; }
+ticketList > ticket history { max-height: 0; overflow: hidden; transition: max-height ease-out .5s; }
+ticketList > ticket:focus history { max-height: 300px; overflow: auto; }

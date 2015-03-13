@@ -365,6 +365,12 @@ module.exports = function (grunt) {
       }
     },
 
+    exec: {
+      deploy: {
+        cmd: 'git subtree push --prefix <%= yeoman.dist %> origin gh-pages'
+      }
+    },
+
     'ftp-deploy': {
       build: {
         auth: {
@@ -377,6 +383,7 @@ module.exports = function (grunt) {
         exclusions: ['path/to/source/folder/**/.DS_Store', 'path/to/source/folder/**/Thumbs.db', 'path/to/dist/tmp']
       }
     },
+
 
     // Run some tasks in parallel to speed up the build process
     concurrent: {
@@ -447,7 +454,9 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'ftp-deploy'
+    'exec',
+    'ftp-deploy',
+    'clean:dist'
   ]);
 
   grunt.registerTask('default', [

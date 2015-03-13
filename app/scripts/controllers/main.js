@@ -22,17 +22,28 @@ angular
             you         : Site.You.get(),
             users       : Site.Users.get(),
             // users    : ComboUsersData,
-            userList    : angular.fromJson(localStorage.userList || '[]'),
+            userList    : (function() {
+                            /*==========  Watch userList for changes to sync localStorage  ==========*/
+                            $scope.$watch('userList', function (newVal, oldVal) {
+                                if (newVal !== null && angular.isDefined(newVal) && newVal !== oldVal) {
+                                    localStorage.userList = angular.toJson(newVal);
+                                }
+                            }, true);
+                            return angular.fromJson(localStorage.userList || '[]');
+                        })(),
             userListType: localStorage.userListType || 'grid',
 
             /*==========  Event Handlers  ==========*/
 
             /*==========  Add user on userSelect  ==========*/
-            userAdd     : function(user) { $scope.userList.push(user); },
+            userAdd     : function(user) {
+                            user.KeyscanMoment = moment(user.KeyscanUpdated).calendar();
+                            $scope.userList.push(user);
+                        },
             /*==========  Update user  ==========*/
             userUpdate  : function (user, r) {
-            				$scope.alerts = {};
-			            	if(user.KeyscanUpdated !== r.KeyscanUpdated) {
+                            $scope.alerts = {};
+                            if(user.KeyscanUpdated !== r.KeyscanUpdated) {
                                 r.KeyscanMoment = moment(r.KeyscanUpdated).calendar();
                                 angular.extend(user, r);
                                 console.log('Updated Status of: ' + user.Name);
@@ -82,13 +93,6 @@ angular
             /*==========  Get List of Tickets  ==========*/
             ticket      : Site.Tickets.get()
         });
-
-        /*==========  Watch userList for changes to sync localStorage  ==========*/
-        $scope.$watch('userList', function (newVal, oldVal) {
-            if (newVal !== null && angular.isDefined(newVal) && newVal !== oldVal) {
-                localStorage.userList = angular.toJson(newVal);
-            }
-        }, true);
     })
     /*==========  User API Interaction  ==========*/
     .factory('Site', function ($resource) {
