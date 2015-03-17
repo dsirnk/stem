@@ -1,79 +1,85 @@
 .navbar-brand img { display: inline-block; height: 20px; margin-right: 10px; }
 
-userList { display: block; margin: 10px -15px; }
-userList[type=grid] { text-align: center; }
+users { display: block; margin: 10px -15px; }
+users[type=grid] { text-align: center; }
 
-userList > user { position: relative; display: inline-block; margin: 10px; outline: 0; font: normal 11px/1.3 Arial; vertical-align: top; transition: all ease-out .15s; }
+users user { position: relative; display: inline-block; margin: 10px; outline: 0; font: normal 11px/1.3 Arial; vertical-align: top; transition: all ease-out .15s; }
+users[list] user { display: block; user-select: none; }
+users[list] user:after { content: attr(team) ' - ' attr(role); display: block; font-size: smaller; text-align: right; }
+users[list] user[selected] { padding: 10px; margin: 0; background: lightskyblue; }
 
-userList[type=grid] > user { min-width: 100px; min-height: 150px; }
-userList[type=grid] > user:focus { z-index: 1; transform: scale(1.5); }
+users user.ng-enter-active,
+users user.ng-leave-active { opacity: 0; transform: scaleY(0); }
+users user.ng-leave-active.prev-keydown { transform-origin: left; }
+users user.ng-leave-active.next-keydown { transform-origin: right; }
+users user.ng-animate scan { }
 
-userList[type=list] > user { display: block; }
-userList[type=list] > user:focus { margin-left: 0; margin-right: 0; }
-userList[type=list] > user:after { content: ''; display: block; clear: both; }
-userList[type=list] > user img { float: left; height: 95px; margin-right: 10px; transition: all ease-out .15s; }
-userList[type=list] > user:focus img { height: 125px; }
 
-userList > user info,
-userList > user scan,
-userList > user info > *,
-userList > user scan > * { display: block; pointer-events: none; }
-userList > user info { background: rgba(255, 255, 255, .50); animation: fadeInDown ease-out .5s; }
-userList > user scan { bottom: 0; background: rgba(255, 255, 255, .50); animation: fadeInUp ease-out .75s; }
-userList > user scan status { font: bold medium Arial; }
+users[type=grid] user { min-width: 100px; min-height: 150px; }
+users[type=grid] user:focus { z-index: 1; transform: scale(1.5); }
 
-userList[type=grid] > user info,
-userList[type=grid] > user scan { position: absolute; left: 0; right: 0; }
-userList[type=grid] > user info { top: 0; }
-userList[type=grid] > user info > *,
-userList[type=grid] > user scan > * { margin: 0 -15px; }
-userList[type=grid] > user info role,
-userList[type=grid] > user info team { max-height: 0; overflow: hidden; }
+users[type=list] user { display: block; }
+users[type=list] user:focus { margin-left: 0; margin-right: 0; }
+users[type=list] user:after { content: ''; display: block; clear: both; }
+users[type=list] user img { float: left; height: 95px; margin-right: 10px; transition: all ease-out .15s; }
+users[type=list] user:focus img { height: 125px; }
 
-userList[type=list] > user info,
-userList[type=list] > user scan { padding-right: 10px; clear: right; }
-userList[type=list] > user scan status,
-userList[type=list] > user scan time { display: inline-block; margin: 0; }
-userList[type=list] > user info team,
-userList[type=list] > user info role,
-userList[type=list] > user scan time { float: right; }
-userList[type=list] > user:focus info name { font-size: 14px; line-height: 14px; }
+users user info,
+users user scan,
+users user info > *,
+users user scan > * { display: block; pointer-events: none; }
+users user info { background: rgba(255, 255, 255, .50); animation: fadeInDown ease-out .5s; }
+users user scan { bottom: 0; background: rgba(255, 255, 255, .50); animation: fadeInUp ease-out .75s; }
+users user scan status { font: bold medium Arial; }
 
-userList > user[status^=IN],
-userList > user[status^=OUT] { animationx: bounce ease-out .5s; }
-userList > user[status^=IN] { box-shadow: 1px 1px 10px rgba(64,255,64, .75); }
-userList > user[status^=IN] scan { background: rgba(64, 255, 64, .75); }
-userList > user[status^=OUT] { box-shadow: 1px 1px 10px rgba(255, 255, 0, .75); }
-userList > user[status^=OUT] scan { background: rgba(255, 255, 0, .75); }
 
-userList > user.ng-leave-active { opacity: 0; transform: scale(0); }
-userList > user.ng-leave-active.prev-keydown { transform-origin: left; }
-userList > user.ng-leave-active.next-keydown { transform-origin: right; }
-userList > user.ng-animate scan { }
+users[type=grid] user info,
+users[type=grid] user scan { position: absolute; left: 0; right: 0; }
+users[type=grid] user info { top: 0; }
+users[type=grid] user info > *,
+users[type=grid] user scan > * { margin: 0 -15px; }
+users[type=grid] user info role,
+users[type=grid] user info team { max-height: 0; overflow: hidden; }
 
-userList > user connect a.glyphicon { padding: 10px; background: rgba(255, 255, 255, 0.5); border-radius: 50%; box-shadow: 1px 1px 15px; font-size: 20px; transition: all ease-out .25s; }
+users[type=list] user info,
+users[type=list] user scan { padding-right: 10px; clear: right; }
+users[type=list] user scan status,
+users[type=list] user scan time { display: inline-block; margin: 0; }
+users[type=list] user info team,
+users[type=list] user info role,
+users[type=list] user scan time { float: right; }
+users[type=list] user:focus info name { font-size: 14px; line-height: 14px; }
 
-userList[type=list] > user connect { position: absolute; right: 0; }
-userList[type=list] > user connect a.glyphicon { float: right; margin: 5px; }
-userList[type=list] > user:focus connect a.glyphicon { margin: 10px; padding: 15px; }
-userList[type=grid] > user connect a.glyphicon { position: absolute; top: 50%; left: 50%; margin-left: -60%; visibility: hidden; opacity: 0; }
-userList[type=grid] > user connect a[href^=tel],
-userList[type=grid] > user:focus connect a.glyphicon { visibility: visible; opacity: 1; }
-userList[type=grid] > user:focus connect a.glyphicon { margin: -20px; }
-userList[type=grid] > user:focus connect a[href^=tel] { margin-left: -65px; }
-userList[type=grid] > user:focus connect a[href^=mailto] { margin-top: 25px; }
-userList[type=grid] > user:focus connect a[href^=sms] { margin-left: 25px; }
-userList[type=grid] > user:focus connect a[href^=gtalk] { margin-top: -65px; }
-userList > user x { position: absolute; top: 0; right: 0; padding: 0 5px; visibility: hidden; opacity: 0; }
-userList > user:focus x { visibility: visible; opacity: 1; }
+users user[status^=IN],
+users user[status^=OUT] { animationx: bounce ease-out .5s; }
+users user[status^=IN] { box-shadow: 1px 1px 10px rgba(64,255,64, .75); }
+users user[status^=IN] scan { background: rgba(64, 255, 64, .75); }
+users user[status^=OUT] { box-shadow: 1px 1px 10px rgba(255, 255, 0, .75); }
+users user[status^=OUT] scan { background: rgba(255, 255, 0, .75); }
 
-ticketList,
-ticketList > ticket,
-ticketList > ticket > *,
-ticketList > ticket > info title { display: block; }
+users user connect a.glyphicon { padding: 10px; background: rgba(255, 255, 255, 0.5); border-radius: 50%; box-shadow: 1px 1px 15px; font-size: 20px; transition: all ease-out .25s; }
 
-ticketList > ticket { margin: 15px auto; }
-ticketList > ticket info { margin-bottom: 5px; }
-ticketList > ticket info id { font: bold medium Arial; }
-ticketList > ticket history { max-height: 0; overflow: hidden; transition: max-height ease-out .5s; }
-ticketList > ticket:focus history { max-height: 300px; overflow: auto; }
+users[type=list] user connect { position: absolute; right: 0; }
+users[type=list] user connect a.glyphicon { float: right; margin: 5px; }
+users[type=list] user:focus connect a.glyphicon { margin: 10px; padding: 15px; }
+users[type=grid] user connect a.glyphicon { position: absolute; top: 50%; left: 50%; margin-left: -60%; visibility: hidden; opacity: 0; }
+users[type=grid] user connect a[href^=tel],
+users[type=grid] user:focus connect a.glyphicon { visibility: visible; opacity: 1; }
+users[type=grid] user:focus connect a.glyphicon { margin: -20px; }
+users[type=grid] user:focus connect a[href^=tel] { margin-left: -65px; }
+users[type=grid] user:focus connect a[href^=mailto] { margin-top: 25px; }
+users[type=grid] user:focus connect a[href^=sms] { margin-left: 25px; }
+users[type=grid] user:focus connect a[href^=gtalk] { margin-top: -65px; }
+users user x { position: absolute; top: 0; right: 0; padding: 0 5px; visibility: hidden; opacity: 0; cursor: pointer; }
+users user:focus x { visibility: visible; opacity: 1; }
+
+tickets,
+tickets > ticket,
+tickets > ticket > *,
+tickets > ticket > info title { display: block; }
+
+tickets > ticket { margin: 15px auto; }
+tickets > ticket info { margin-bottom: 5px; }
+tickets > ticket info id { font: bold medium Arial; }
+tickets > ticket history { max-height: 0; overflow: hidden; transition: max-height ease-out .5s; }
+tickets > ticket:focus history { max-height: 300px; overflow: auto; }

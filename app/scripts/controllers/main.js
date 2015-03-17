@@ -8,7 +8,7 @@
  * # MainCtrl
  * Controller of the stemApp
  */
-var refreshInterval = 1000 * 60 * 6/60;
+var refreshInterval = 5000;
 
 angular
     .module('stemApp')
@@ -18,117 +18,87 @@ angular
             alerts      : {},
             moment      : moment,
 
+            /*==========  Get My info  ==========*/
+            my          : (function() { Site.my.get().$promise.then(function(my) { $scope.my = my.Entries[0]; }); })(),
+            /*==========  Get List of Tickets  ==========*/
+            tickets     : (function() { Site.tickets.get().$promise.then(function(tickets) { $scope.tickets = tickets.Entries; }); })(),
             /*==========  Get List of Users  ==========*/
-            you         : Site.You.get(),
-            users       : Site.Users.get(),
-            // users    : ComboUsersData,
-            userList    : (function() {
-                            /*==========  Watch userList for changes to sync localStorage  ==========*/
-                            $scope.$watch('userList', function (newVal, oldVal) {
+            users       : (function() {
+                            /*==========  Watch users for changes to sync localStorage  ==========*/
+                            $scope.$watch('users', function (newVal, oldVal) {
                                 if (newVal !== null && angular.isDefined(newVal) && newVal !== oldVal) {
-                                    localStorage.userList = angular.toJson(newVal);
+                                    localStorage.users = angular.toJson(newVal);
                                 }
                             }, true);
-                            return angular.fromJson(localStorage.userList || '[]');
+
+                            /*==========  Get and Update users list  ==========*/
+                            (function userGet() {
+                                Site.users.get().$promise.then(function(users) {
+                                    users.Entries.forEach(function(user, i) {
+                                        var userInit = {
+                                            KeyscanMoment : moment(user.KeyscanUpdated).calendar(),
+                                            add           : function() { this.stem = true;  },
+                                            remove        : function() { this.stem = false; }
+                                        };
+                                        if ($scope.users[i]) {
+                                            if (!angular.equals($scope.users[i], user)) $.extend($scope.users[i], user, userInit);
+                                        } else $scope.users.push($.extend(user, userInit));
+                                    });
+                                    setTimeout(userGet, refreshInterval);
+                                });
+                            })();
+                            return angular.fromJson(localStorage.users || '[]');
                         })(),
             userListType: localStorage.userListType || 'grid',
 
             /*==========  Event Handlers  ==========*/
 
-            /*==========  Add user on userSelect  ==========*/
-            userAdd     : function(user) {
-                            user.KeyscanMoment = moment(user.KeyscanUpdated).calendar();
-                            $scope.userList.push(user);
+            /*==========  Filter user on userQuery  ==========*/
+            userFilter  : function(user) {
+                            return !user.stem && !!~[user.Name, user.Title || '', user.BusinessUnitName || ''].join().toLowerCase().indexOf($scope.userQuery);
                         },
-            /*==========  Update user  ==========*/
-            userUpdate  : function (user, r) {
-                            $scope.alerts = {};
-                            if(user.KeyscanUpdated !== r.KeyscanUpdated) {
-                                r.KeyscanMoment = moment(r.KeyscanUpdated).calendar();
-                                angular.extend(user, r);
-                                console.log('Updated Status of: ' + user.Name);
+            /*==========  Select user on users  ==========*/
+            userSelect  : function($event, $user) {
+                            if (!~[9].indexOf($event.keyCode)) $event.preventDefault();
+                            if (!!~[9,13].indexOf($event.keyCode) || $user) $user.add();
+                            var user     = $('users[list] > user[selected]'),
+                                prevNext = $event.type === 'click' ? $($event.target) : user[!!~[38].indexOf($event.keyCode) ? 'prev' : 'next']('user');
+                            user.removeAttr('selected').siblings().removeAttr('selected');
+                            prevNext.attr('selected','selected');
+                            if (!!~[8,46, undefined].indexOf($event.keyCode)) {
+                                user.addClass(prevNext+'-'+$event.type);
                             }
-			            },
-            /*==========  On userSelect  ==========*/
-            userSelected: function ($item) {
-                            var user = { UserID: $item.UserID };
-                            /*==========  Avoid Duplicate Entires in userList  ==========*/
-                            if (!$filter('filter')($scope.userList, user).length) {
-                                Site.User
-                                    .get(user)
-                                    .$promise.then($scope.userAdd, $scope.userError);
-                            }
-                            $scope.userSelect = null;
                         },
             /*==========  Remove from userList  ==========*/
-            userMove    : function ($event, $item) {
-                            $event.preventDefault();
+            userMove    : function ($event) {
                             var user     = $($event.target).closest('user'),
                                 prevNext = !!~[8,37,38].indexOf($event.keyCode) ? 'prev' : 'next';
                             user[prevNext]().focus();
                             if (!!~[8,46, undefined].indexOf($event.keyCode)) {
                                 user.addClass(prevNext+'-'+$event.type);
-                                $scope.userList.splice($item, 1);
                             }
                         },
-            /*==========  Error on userGet  ==========*/
-            userError: function() {
-                            $scope.alerts.user = {
-                                type : 'danger',
-                                msg  : 'Couldn\'t connect to the API.\n' +
-                                        'Please ensure you are connected to the internet and' +
-                                        'Logged into http://geome.klick.com'
-                            };
-                        },
-            /*==========  Update userList  ==========*/
-            userGet     : setInterval(function () {
-                            angular.forEach($scope.userList, function (user) {
-                                Site.User
-                                    .get({ UserID: user.UserID })
-                                    .$promise.then(function (r) { $scope.userUpdate(user, r); }, $scope.userError);
-                            });
-                        }, refreshInterval),
             /*==========  Sort userList (sortable config)  ==========*/
             userSort    : { containment: 'parent', cursor: 'move', opacity: 0.75, revert: 250, tolerance: 'pointer' },
-            /*==========  Get List of Tickets  ==========*/
-            ticket      : Site.Tickets.get()
         });
     })
     /*==========  User API Interaction  ==========*/
     .factory('Site', function ($resource) {
-        var site = 'http://genome.klick.com',
-            siteAPI = site + '/api',
-            siteParams = { method: 'JSONP', params: { format: 'json', callback: 'JSON_CALLBACK' } };
+        var site       = 'http://genome.klick.com',
+            resource   = function(path, params) {
+                            return $resource(site + '/api' + path,
+                                { ForGrid: true },
+                                { get: angular.extend(
+                                    typeof params === 'function' ? { transformResponse: params } : (params || {}),
+                                    { method: 'JSONP', params: { format: 'json', callback: 'JSON_CALLBACK' } }
+                                )}
+                            );
+                        };
 
         return {
-            You     : $resource(siteAPI + '/User/Current',
-                        { ForAutocompleter: true, ForGrid: true },
-                        { get: angular.extend({ transformResponse: function (r) {
-                                return r.Entries[0];
-                            }
-                        }, siteParams)}
-                    ),
-            Users   : $resource(siteAPI + '/User',
-                        { ForAutocompleter: true, ForGrid: true },
-                        { get: siteParams }
-                    ),
-            User    : $resource(siteAPI + '/User',
-                        { UserID: '@UserID' },
-                        { get: angular.extend({ transformResponse: function (r) {
-                                // if (Math.random() > 0.95) angular.extend(r.Entries[0], { KeyscanUpdated: (new Date()).getTime(), KeyscanStatus: ['NOTIN', 'IN', 'OUT', 'IN2', 'OUT2', 'IN3', 'OUT3', 'IN4', 'OUT4', 'IN7', 'OUT7'][Math.floor((Math.random() * 10 + 1))] });
-                                r.Entries[0].PhotoPath         = site + r.Entries[0].PhotoPath;
-                                return r.Entries[0];
-                            }
-                        }, siteParams)}
-                    ),
-            Tickets : $resource(siteAPI + '/Ticket',
-                        { ForAutocompleter: true, ForGrid: true },
-                        { get: siteParams }
-                    ),
-            Ticket  : $resource(siteAPI + '/Ticket',
-                        { TicketID: '@TicketID' },
-                        { get: siteParams }
-                    ),
+            my      : resource('/user/current'),
+            users   : resource('/user'),
+            tickets : resource('/ticket'),
         };
     })
     /*==========  Store images offline  ==========*

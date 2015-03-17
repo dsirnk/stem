@@ -1,32 +1,44 @@
-<nav class="navbar navbar-inverse">
+<!-- <nav class="navbar navbar-inverse">
     <a class="navbar-brand" href="#"><img src="apple-touch-icon.png" alt="">Stem</a>
     <span class="pull-right">
-        <a class="btn glyphicon glyphicon-th-large" onclick="localStorage.userListType = 'grid'; document.querySelector('userList').setAttribute('type','grid')"></a>
-        <a class="btn glyphicon glyphicon-th-list" onclick="localStorage.userListType = 'list'; document.querySelector('userList').setAttribute('type','list')"></a>
+        <a class="btn glyphicon glyphicon-th-large" onclick="localStorage.userListType = 'grid'; document.querySelector('users[type]').setAttribute('type','grid')"></a>
+        <a class="btn glyphicon glyphicon-th-list" onclick="localStorage.userListType = 'list'; document.querySelector('users[type]').setAttribute('type','list')"></a>
     </span>
-</nav>
+</nav> -->
 
 <alert ng-repeat = "alert in alerts" type = "{{alert.type}}"> {{alert.msg}} </alert>
-<input
-    ng-model            = "userSelect"
-    ng-show             = "users.Entries"
-    typeahead           = "user.Title as user.Name for user in users.Entries | filter: { Name: $viewValue } | orderBy:'Name':false"
-    typeahead-on-select = "userSelected($item)"
-    placeholder         = "Select User"
-    class               = "form-control"
-    type                = "text"
-    tabindex            = "1"/>
-<userList
-    ng-model    = "userList"
-    ui-sortable = "userSort"
-    type        = "{{userListType}}">
+<users
+    list
+    ui-keydown      = "{ 'enter tab up down': 'userSelect($event)' }">
+    <input
+        ng-show         = "users"
+        ng-model        = "userQuery"
+        placeholder     = "Select User"
+        class           = "form-control"
+        type            = "text"
+        tabindex        = "1"/>
     <user
-        ng-repeat     = "user in userList"
-        status        = "{{user.KeyscanStatus}}"
-        ui-keydown    = "{ 'backspace delete up left right down': 'userMove($event, $index)' }"
-        onclick       = "this.focus()"
-        tabindex      = "1">
-            <img onimageload ng-src = "{{user.PhotoPath}}"/>
+        ng-repeat       = "user in users | filter: userFilter | orderBy:'Name' | limitTo: 10 track by user.UserID"
+        ng-click        = "userSelect($event, user)"
+        ng-selected     = "$first"
+        ng-model        = "selected"
+        tabindex        = "-1"
+        role            = "{{user.Title}}"
+        team            = "{{user.BusinessUnitName}}">
+        {{user.Name}}
+    </user>
+</users>
+<users
+    type                = "{{userListType}}">
+    <user
+        ng-repeat       = "user in users | filter: { stem: true }"
+        status          = "{{user.KeyscanStatus}}"
+        ui-keydown      = "{ 'backspace delete left up right down': 'userMove($event)' }"
+        onclick         = "this.focus()"
+        tabindex        = "1">
+            <img
+                ng-src  = "{{user.PhotoPath}}"
+                onimageload/>
             <info>
                 <team>{{user.BusinessUnitName}}</team>
                 <name>{{user.Name}}</name>
@@ -39,7 +51,7 @@
             <connect>
                 <a
                     ng-show  = "user.MobileNumber"
-                    href     = "gtalk:chat?jid={{user.Email}}&amp;from_jid={{you.Email}}"
+                    href     = "gtalk:chat?jid={{user.Email}}&amp;from_jid={{my.Email}}"
                     class    = "glyphicon glyphicon-send"></a>
                 <a
                     ng-show  = "user.MobileNumber"
@@ -54,14 +66,14 @@
                     href     = "tel:{{user.MobileNumber}}"
                     class    = "glyphicon glyphicon-earphone"></a>
             </connect>
-            <x ng-click  = "userMove($event, $index)">&times;</x>
+            <x ng-click  = "user.remove()">&times;</x>
     </user>
-</userList>
-<ticketList
-    ng-show = "ticket.Entries">
-    <h5>Tickets ({{(ticket.Entries | filter: {GroupName:'OpenForMe'}).length}})</h5>
+</users>
+<tickets
+    ng-show = "tickets">
+    <h5>Tickets ({{(tickets | filter: {GroupName:'OpenForMe'}).length}})</h5>
     <ticket
-        ng-repeat = "ticket in ticket.Entries | filter: {GroupName:'OpenForMe'} | orderBy:'GroupName':true"
+        ng-repeat = "ticket in tickets | filter: { GroupName: 'OpenForMe' } | orderBy:'GroupName':true track by ticket.TicketID"
         onclick   = "this.focus()"
         tabindex  = "1">
         <info>
@@ -71,4 +83,4 @@
         <history></history>
     </ticket>
 <!-- <progressbar class = "progress-striped active" value = "userUpdateInterval"></progressbar> -->
-</ticketList>
+</tickets>
