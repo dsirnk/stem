@@ -454,7 +454,7 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'exec',
+    // 'exec',
     'ftp-deploy',
     'clean:dist'
   ]);
