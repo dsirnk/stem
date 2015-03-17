@@ -1,10 +1,10 @@
-<!-- <nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse">
     <a class="navbar-brand" href="#"><img src="apple-touch-icon.png" alt="">Stem</a>
     <span class="pull-right">
         <a class="btn glyphicon glyphicon-th-large" onclick="localStorage.userListType = 'grid'; document.querySelector('users[type]').setAttribute('type','grid')"></a>
         <a class="btn glyphicon glyphicon-th-list" onclick="localStorage.userListType = 'list'; document.querySelector('users[type]').setAttribute('type','list')"></a>
     </span>
-</nav> -->
+</nav>
 
 <alert ng-repeat = "alert in alerts" type = "{{alert.type}}"> {{alert.msg}} </alert>
 <users
