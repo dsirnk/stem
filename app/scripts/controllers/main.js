@@ -37,7 +37,13 @@ angular
                                     users.Entries.forEach(function(user, i) {
                                         var userInit = {
                                             KeyscanMoment : moment(user.KeyscanUpdated).calendar(),
-                                            add           : function() { this.stem = true;  },
+                                            add           : function() {
+                                                                var $this = this;
+                                                                $this.stem = true;
+                                                                Site.userPic.get({ UserIDs: $this.UserID }).$promise.then(function(user) {
+                                                                    $this.PhotoPath = Site.url + user.Entries[0].PhotoPath;
+                                                                });
+                                                            },
                                             remove        : function() { this.stem = false; }
                                         };
                                         if ($scope.users[i]) {
@@ -85,24 +91,26 @@ angular
     /*==========  User API Interaction  ==========*/
     .factory('Site', function ($resource) {
         var site       = 'http://genome.klick.com',
-            resource   = function(path, params) {
+            resource   = function(path, params, actionParams) {
                             return $resource(site + '/api' + path,
-                                { ForGrid: true },
+                                params || { ForGrid: true },
                                 { get: angular.extend(
-                                    typeof params === 'function' ? { transformResponse: params } : (params || {}),
+                                    typeof actionParams === 'function' ? { transformResponse: actionParams } : (actionParams || {}),
                                     { method: 'JSONP', params: { format: 'json', callback: 'JSON_CALLBACK' } }
                                 )}
                             );
                         };
 
         return {
+            url     : site,
             my      : resource('/user/current'),
             users   : resource('/user'),
+            userPic : resource('/user/photo', { UserIDs: '@UserIDs' }),
             tickets : resource('/ticket'),
         };
     })
-    /*==========  Store images offline  ==========*
-    .directive('onimageload', function () {
+    /*==========  Load and Store Images  ==========*
+    .directive('loadImage', function () {
         return {
             restrict :  'A',
             link     :  function (scope, el) {

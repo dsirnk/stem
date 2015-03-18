@@ -37,8 +37,8 @@
         onclick         = "this.focus()"
         tabindex        = "1">
             <img
-                ng-src  = "{{user.PhotoPath}}"
-                onimageload/>
+                loadImage
+                ng-src  = "{{user.PhotoPath}}"/>
             <info>
                 <team>{{user.BusinessUnitName}}</team>
                 <name>{{user.Name}}</name>
