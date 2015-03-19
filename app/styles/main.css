@@ -2,7 +2,7 @@
 .navbar-brand img { display: inline-block; height: 20px; margin-right: 10px; }
 
 users { display: block; z-index: 1; }
-users[list] { position: absolute; }
+users[list] { position: absolute; background: white; max-height: 50%; padding: 0; overflow: auto; box-shadow: 0px 15px 30px; }
 users[type=grid] { text-align: center; }
 
 users user { position: relative; display: inline-block; margin: 20px 10px 0; outline: 0; font: normal 11px/1.3 Arial; vertical-align: top; transition: all ease-out .15s; }
@@ -13,7 +13,7 @@ users[list] user[selected] { margin: 0; background: #87cefa; }
 users user.ng-enter,
 users user.ng-hide,
 users user.ng-leave-active,
-users user.ng-hide-remove { opacity: 0; transform: scaleY(0); }
+users user.ng-hide-remove { opacity: 0; max-height: 0; transform: scaleY(0); }
 users user.ng-leave-active.prev-keydown { transform-origin: left; }
 users user.ng-leave-active.next-keydown { transform-origin: right; }
 users user.ng-animate scan { }

@@ -1,6 +1,7 @@
 <nav class="navbar navbar-inverse">
     <a class="navbar-brand" href="#"><img src="apple-touch-icon.png" alt="">Stem</a>
     <span class="pull-right">
+        <a class="btn glyphicon glyphicon-off" onclick="localStorage.clear();"></a>
         <a class="btn glyphicon glyphicon-th-large" onclick="localStorage.userListType = 'grid'; document.querySelector('users[type]').setAttribute('type','grid')"></a>
         <a class="btn glyphicon glyphicon-th-list" onclick="localStorage.userListType = 'list'; document.querySelector('users[type]').setAttribute('type','list')"></a>
     </span>
@@ -33,7 +34,7 @@
 <users
     type                = "{{userListType}}">
     <user
-        ng-repeat       = "user in users | filter: { stem: true }"
+        ng-repeat       = "user in users | filter: { stem: true } track by user.UserID"
         status          = "{{user.KeyscanStatus}}"
         ui-keydown      = "{ 'backspace delete left up right down': 'userMove($event)' }"
         onclick         = "this.focus()"

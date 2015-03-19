@@ -79,8 +79,10 @@ angular
                                     // if (!!~[9,13].indexOf($event.keyCode)) $user.add();
                                     return user[!!~[38].indexOf($event.keyCode) ? 'prev' : 'next']('user');
                                 })()
-                            user.removeAttr('selected').siblings().removeAttr('selected');
-                            prevNext.attr('selected','selected');
+                            if (prevNext.length) {
+                                user.removeAttr('selected').siblings().removeAttr('selected');
+                                prevNext.attr('selected','selected').get(0).scrollIntoViewIfNeeded();
+                            }
                         },
             /*==========  Remove from userList  ==========*/
             userMove    : function ($event) {
