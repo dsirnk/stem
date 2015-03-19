@@ -7,21 +7,23 @@
 </nav>
 
 <alert ng-repeat = "alert in alerts" type = "{{alert.type}}"> {{alert.msg}} </alert>
+<input
+    ng-show             = "users"
+    ng-model            = "userQuery"
+    ui-keydown          = "{ 'enter tab up down': 'userSelect($event)' }"
+    placeholder         = "Select User"
+    class               = "form-control"
+    type                = "text"
+    tabindex            = "1"/>
 <users
     list
-    ui-keydown      = "{ 'enter tab up down': 'userSelect($event)' }">
-    <input
-        ng-show         = "users"
-        ng-model        = "userQuery"
-        placeholder     = "Select User"
-        class           = "form-control"
-        type            = "text"
-        tabindex        = "1"/>
+    class               = "col-xs-12 col-sm-6"
+    ui-keydown          = "{ 'enter tab up down': 'userSelect($event)' }">
     <user
-        ng-repeat       = "user in users | filter: userFilter | orderBy:'Name' | limitTo: 10 track by user.UserID"
+        ng-repeat       = "user in users | orderBy:'Name' track by user.UserID"
         ng-click        = "userSelect($event, user)"
         ng-selected     = "$first"
-        ng-model        = "selected"
+        ng-show         = "!user.stem && userQuery && [user.Name, user.Title || '', user.BusinessUnitName || ''].join().toLowerCase().indexOf(userQuery) > -1"
         tabindex        = "-1"
         role            = "{{user.Title}}"
         team            = "{{user.BusinessUnitName}}">
