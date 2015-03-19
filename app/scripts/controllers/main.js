@@ -82,7 +82,7 @@ angular
 
             /*==========  Filter users in the list  ==========*/
             userFilter  : function(user) {
-                            return !user.stem && $scope.userQuery && [user.Name, user.Title || '', user.BusinessUnitName || ''].join().toLowerCase().indexOf($scope.userQuery) > -1;
+                            return !user.stem && $scope.userQuery && [user.Name, user.Title || '', user.BusinessUnitName || ''].join().toLowerCase().indexOf($scope.userQuery.toLowerCase()) > -1;
                         },
             /*==========  Remove from userList  ==========*/
             userMove    : function ($event) {

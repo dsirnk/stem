@@ -14,7 +14,7 @@
         ng-model               = "userQuery"
         ng-show                = "users"
         typeahead              = "user.Name for user in users | filter: userFilter | orderBy:'Name'"
-        typeahead-wait-ms      = "250"
+        typeahead-wait-ms      = "500"
         typeahead-template-url = "user.html"
         typeahead-on-select    = "$item.add(); userQuery = undefined"
         placeholder            = "Select User"
