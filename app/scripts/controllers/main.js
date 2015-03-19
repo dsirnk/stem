@@ -24,56 +24,63 @@ angular
             tickets     : (function() { Site.tickets.get().$promise.then(function(tickets) { $scope.tickets = tickets.Entries; }); })(),
             /*==========  Get List of Users  ==========*/
             users       : (function() {
-                            /*==========  Watch users for changes to sync localStorage  ==========*/
+                            /*==========  Watch users for changes to sync with localStorage  ==========*/
                             $scope.$watch('users', function (newVal, oldVal) {
                                 if (newVal !== null && angular.isDefined(newVal) && newVal !== oldVal) {
                                     localStorage.users = angular.toJson(newVal);
                                 }
                             }, true);
 
+                            /*==========  Tag users with additional info / tools  ==========*/
+                            function userTag(users) {
+                                users = users || [];
+                                $scope.users = $scope.users || [];
+                                users.forEach(function(user, i) {
+                                    var userInit = {
+                                        KeyscanMoment : moment(user.KeyscanUpdated).calendar(),
+                                        add           : function() {
+                                                            var $this = this;
+                                                            $this.stem = true;
+                                                            Site.userPic.get({ UserIDs: $this.UserID }).$promise.then(function(user) {
+                                                                $this.PhotoPath = Site.url + user.Entries[0].PhotoPath;
+                                                            });
+                                                        },
+                                        remove        : function() { this.stem = false; }
+                                    };
+                                    if ($scope.users[i]) {
+                                        if ($scope.users[i].KeyscanUpdated !== user.KeyscanUpdated) {
+                                            $.extend($scope.users[i], user, userInit);
+                                            console.log('updated:', user.Name);
+                                        }
+                                    } else $scope.users.push($.extend(user, userInit));
+                                });
+                                return users;
+                            }
+
                             /*==========  Get and Update users list  ==========*/
                             (function userGet() {
                                 Site.users.get().$promise.then(function(users) {
-                                    users.Entries.forEach(function(user, i) {
-                                        var userInit = {
-                                            KeyscanMoment : moment(user.KeyscanUpdated).calendar(),
-                                            add           : function() {
-                                                                var $this = this;
-                                                                $this.stem = true;
-                                                                Site.userPic.get({ UserIDs: $this.UserID }).$promise.then(function(user) {
-                                                                    $this.PhotoPath = Site.url + user.Entries[0].PhotoPath;
-                                                                });
-                                                            },
-                                            remove        : function() { this.stem = false; }
-                                        };
-                                        if ($scope.users[i]) {
-                                            if (!angular.equals($scope.users[i], user)) $.extend($scope.users[i], user, userInit);
-                                        } else $scope.users.push($.extend(user, userInit));
-                                    });
+                                    userTag(users.Entries);
                                     setTimeout(userGet, refreshInterval);
                                 });
                             })();
-                            return angular.fromJson(localStorage.users || '[]');
+                            return userTag(angular.fromJson(localStorage.users));
                         })(),
             userListType: localStorage.userListType || 'grid',
 
             /*==========  Event Handlers  ==========*/
 
-            /*==========  Filter user on userQuery  ==========*/
-            userFilter  : function(user) {
-                            return !user.stem && !!~[user.Name, user.Title || '', user.BusinessUnitName || ''].join().toLowerCase().indexOf($scope.userQuery);
-                        },
             /*==========  Select user on users  ==========*/
             userSelect  : function($event, $user) {
-                            if (!~[9].indexOf($event.keyCode)) $event.preventDefault();
-                            if (!!~[9,13].indexOf($event.keyCode) || $user) $user.add();
+                            if ($user) $user.add();
                             var user     = $('users[list] > user[selected]'),
-                                prevNext = $event.type === 'click' ? $($event.target) : user[!!~[38].indexOf($event.keyCode) ? 'prev' : 'next']('user');
+                                prevNext = $event.type === 'click' ? $($event.target) : (function() {
+                                    if (!~[9].indexOf($event.keyCode)) $event.preventDefault();
+                                    // if (!!~[9,13].indexOf($event.keyCode)) $user.add();
+                                    return user[!!~[38].indexOf($event.keyCode) ? 'prev' : 'next']('user');
+                                })()
                             user.removeAttr('selected').siblings().removeAttr('selected');
                             prevNext.attr('selected','selected');
-                            if (!!~[8,46, undefined].indexOf($event.keyCode)) {
-                                user.addClass(prevNext+'-'+$event.type);
-                            }
                         },
             /*==========  Remove from userList  ==========*/
             userMove    : function ($event) {
