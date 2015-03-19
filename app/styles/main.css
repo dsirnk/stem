@@ -73,10 +73,9 @@ users[type=grid] user:focus connect a[href^=tel] { margin-left: -65px; }
 users[type=grid] user:focus connect a[href^=mailto] { margin-top: 25px; }
 users[type=grid] user:focus connect a[href^=sms] { margin-left: 25px; }
 users[type=grid] user:focus connect a[href^=gtalk] { margin-top: -65px; }
-users user x { position: absolute; top: 0; right: 0; background: #ed143d; padding: 0 5px; border-radius: 50%; visibility: hidden; opacity: 0; cursor: pointer; }
-users user[edit] x { padding: 5px 10px; font-size: larger; }
+users user x[class*=remove] { position: absolute; top: 0; right: 0; padding: 5px; visibility: hidden; opacity: 0; }
 users user[edit] x,
-users user:focus x { visibility: visible; opacity: .75; }
+users user:focus x { visibility: visible; opacity: 1; }
 
 tickets { padding: 20px; }
 tickets,
