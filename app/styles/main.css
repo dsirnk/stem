@@ -1,23 +1,24 @@
 .container { padding: 0; }
 .navbar-brand img { display: inline-block; height: 20px; margin-right: 10px; }
 
-users { display: block; z-index: 1; }
-users[list] { position: absolute; background: white; max-height: 50%; padding: 0; overflow: auto; box-shadow: 0px 15px 30px; }
+input ~ *[class*=remove] { position: absolute; right: 0; height: 100%; width: 50px; background-color: transparent; border: 1px solid transparent; z-index: 2; vertical-align: middle; cursor: pointer; }
+input[required]:not(:valid) ~ *[class*=remove] { display: none; }
+
+users { display: block; }
 users[type=grid] { text-align: center; }
 
 users user { position: relative; display: inline-block; margin: 20px 10px 0; outline: 0; font: normal 11px/1.3 Arial; vertical-align: top; transition: all ease-out .15s; }
-users[list] user { display: block; margin: 0; padding: 10px 20px; background: #fff; user-select: none; }
-users[list] user:after { content: attr(team) ' - ' attr(role); display: block; font-size: smaller; text-align: right; }
-users[list] user[selected] { margin: 0; background: #87cefa; }
+.dropdown-menu,
+.dropdown-menu > li { max-width: 100%; overflow: auto; }
+.dropdown-menu > li > a { padding: 10px 20px; user-select: none; cursor: pointer; font-size: smaller; text-align: right; }
+.dropdown-menu > li > a > name { display: block; text-align: left; font-size: larger; }
 
 users user.ng-enter,
 users user.ng-hide,
-users user.ng-leave-active,
-users user.ng-hide-remove { opacity: 0; max-height: 0; transform: scaleY(0); }
+users user.ng-leave-active { opacity: 0; max-height: 0; overflow: hidde; transform: scaleY(0); }
 users user.ng-leave-active.prev-keydown { transform-origin: left; }
 users user.ng-leave-active.next-keydown { transform-origin: right; }
 users user.ng-animate scan { }
-
 
 users[type=grid] user { min-width: 100px; min-height: 150px; }
 users[type=grid] user:focus { z-index: 1; transform: scale(1.5); }
@@ -40,15 +41,13 @@ users user scan status { font: bold medium Arial; }
 users[type=grid] user info,
 users[type=grid] user scan { position: absolute; left: 0; right: 0; }
 users[type=grid] user info { top: 0; }
-users[type=grid] user info > *,
-users[type=grid] user scan > * { margin: 0 -15px; }
 users[type=grid] user info role,
 users[type=grid] user info team { max-height: 0; overflow: hidden; }
 
 users[type=list] user info,
 users[type=list] user scan { padding-right: 10px; clear: right; }
 users[type=list] user scan status,
-users[type=list] user scan time { display: inline-block; margin: 0; }
+users[type=list] user scan time { display: inline-block; }
 users[type=list] user info team,
 users[type=list] user info role,
 users[type=list] user scan time { float: right; }
@@ -74,8 +73,10 @@ users[type=grid] user:focus connect a[href^=tel] { margin-left: -65px; }
 users[type=grid] user:focus connect a[href^=mailto] { margin-top: 25px; }
 users[type=grid] user:focus connect a[href^=sms] { margin-left: 25px; }
 users[type=grid] user:focus connect a[href^=gtalk] { margin-top: -65px; }
-users user x { position: absolute; top: 0; right: 0; padding: 0 5px; visibility: hidden; opacity: 0; cursor: pointer; }
-users user:focus x { visibility: visible; opacity: 1; }
+users user x { position: absolute; top: 0; right: 0; background: #ed143d; padding: 0 5px; border-radius: 50%; visibility: hidden; opacity: 0; cursor: pointer; }
+users user[edit] x { padding: 5px 10px; font-size: larger; }
+users user[edit] x,
+users user:focus x { visibility: visible; opacity: .75; }
 
 tickets { padding: 20px; }
 tickets,

@@ -15,6 +15,7 @@ angular
     .controller('MainCtrl', function ($scope, $filter, Site) {
         angular.extend($scope, {
             /*==========  Initialize scope variables  ==========*/
+            stems       : 0,
             alerts      : {},
             moment      : moment,
 
@@ -33,32 +34,41 @@ angular
 
                             /*==========  Tag users with additional info / tools  ==========*/
                             function userTag(users) {
+                                var stems = 0;
                                 users = users || [];
                                 $scope.users = $scope.users || [];
                                 users.forEach(function(user, i) {
+                                    // if (($scope.users[i] || {}).stem) if (Math.random() > 0.5) angular.extend(user, { KeyscanUpdated: (new Date()).getTime(), KeyscanStatus: ['NOTIN', 'IN', 'OUT', 'IN2', 'OUT2', 'IN3', 'OUT3', 'IN4', 'OUT4', 'IN7', 'OUT7'][Math.floor((Math.random() * 10 + 1))] });
                                     var userInit = {
-                                        KeyscanMoment : moment(user.KeyscanUpdated).calendar(),
-                                        add           : function() {
+                                        KeyscanFromNow : moment(user.KeyscanUpdated).fromNow(),
+                                        KeyscanStamp   : moment(user.KeyscanUpdated).format('llll'),
+                                        add            : function() {
                                                             var $this = this;
-                                                            $this.stem = true;
+                                                            $this.stem = ++$scope.stems;
                                                             Site.userPic.get({ UserIDs: $this.UserID }).$promise.then(function(user) {
                                                                 $this.PhotoPath = Site.url + user.Entries[0].PhotoPath;
                                                             });
                                                         },
-                                        remove        : function() { this.stem = false; }
+                                        remove         : function() { delete this.stem; }
                                     };
-                                    if ($scope.users[i]) {
-                                        if ($scope.users[i].KeyscanUpdated !== user.KeyscanUpdated) {
-                                            $.extend($scope.users[i], user, userInit);
-                                            console.log('updated:', user.Name);
+                                    var local = $scope.users[i];
+                                    if (local) {
+                                        if (local.stem) {
+                                            stems++;
+                                            if (local.KeyscanUpdated !== user.KeyscanUpdated) {
+                                                $.extend(local, user, userInit);
+                                                console.table([[local.Name,local.KeyscanStatus,local.KeyscanStamp]]);
+                                            }
                                         }
                                     } else $scope.users.push($.extend(user, userInit));
                                 });
+                                $scope.stems = stems;
                                 return users;
                             }
 
                             /*==========  Get and Update users list  ==========*/
                             (function userGet() {
+                                console.debug('get: users');
                                 Site.users.get().$promise.then(function(users) {
                                     userTag(users.Entries);
                                     setTimeout(userGet, refreshInterval);
@@ -70,19 +80,9 @@ angular
 
             /*==========  Event Handlers  ==========*/
 
-            /*==========  Select user on users  ==========*/
-            userSelect  : function($event, $user) {
-                            if ($user) $user.add();
-                            var user     = $('users[list] > user[selected]'),
-                                prevNext = $event.type === 'click' ? $($event.target) : (function() {
-                                    if (!~[9].indexOf($event.keyCode)) $event.preventDefault();
-                                    // if (!!~[9,13].indexOf($event.keyCode)) $user.add();
-                                    return user[!!~[38].indexOf($event.keyCode) ? 'prev' : 'next']('user');
-                                })()
-                            if (prevNext.length) {
-                                user.removeAttr('selected').siblings().removeAttr('selected');
-                                prevNext.attr('selected','selected').get(0).scrollIntoViewIfNeeded();
-                            }
+            /*==========  Filter users in the list  ==========*/
+            userFilter  : function(user) {
+                            return !user.stem && $scope.userQuery && [user.Name, user.Title || '', user.BusinessUnitName || ''].join().toLowerCase().indexOf($scope.userQuery) > -1;
                         },
             /*==========  Remove from userList  ==========*/
             userMove    : function ($event) {
@@ -90,11 +90,12 @@ angular
                                 prevNext = !!~[8,37,38].indexOf($event.keyCode) ? 'prev' : 'next';
                             user[prevNext]().focus();
                             if (!!~[8,46, undefined].indexOf($event.keyCode)) {
+                                this.user.remove();
                                 user.addClass(prevNext+'-'+$event.type);
                             }
                         },
             /*==========  Sort userList (sortable config)  ==========*/
-            userSort    : { containment: 'parent', cursor: 'move', opacity: 0.75, revert: 250, tolerance: 'pointer' },
+            userSort    : { containment : 'parent', cursor : 'move', opacity : 0.75, revert : 250, tolerance : 'pointer', 'ui-floating' : 'auto' }
         });
     })
     /*==========  User API Interaction  ==========*/
@@ -128,7 +129,7 @@ angular
                                 var c    = document.createElement('canvas');
                                 var ctx  = c.getContext('2d');
                                 ctx.drawImage(el[0], 0, 0);
-                                console.log(c.toDataURL());
+                                console.debug(c.toDataURL());
                                 // localStorage.userList.replace(el.attr('src'), dataURI)
                             });
                         }
