@@ -53,6 +53,7 @@ angular
                                     };
                                     var local = $scope.users[i];
                                     if (local) {
+                                        if (local.UserID !== user.UserID) console.error(local.Name, '>>', user.Name);
                                         if (local.stem) {
                                             stems++;
                                             if (local.KeyscanUpdated !== user.KeyscanUpdated) {
