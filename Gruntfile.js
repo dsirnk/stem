@@ -454,11 +454,13 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    // 'exec',
-    'ftp-deploy',
-    'clean:dist'
+    'ftp-deploy'
   ]);
 
+  grunt.registerTask('deploy', [
+    'build',
+    'exec'
+  ]);
   grunt.registerTask('default', [
     'newer:jshint',
     'test',
