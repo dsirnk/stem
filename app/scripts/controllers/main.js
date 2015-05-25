@@ -15,68 +15,46 @@ angular
     .controller('MainCtrl', function ($scope, $filter, Site) {
         angular.extend($scope, {
             /*==========  Initialize scope variables  ==========*/
-            stems       : 0,
-            alerts      : {},
             moment      : moment,
+            log         : function(str) { console.log(JSON.stringify(str, null, 4)); },
 
-            /*==========  Get My info  ==========*/
-            my          : (function() { Site.my.get().$promise.then(function(my) { $scope.my = my.Entries[0]; }); })(),
-            /*==========  Get List of Tickets  ==========*/
-            tickets     : (function() { Site.tickets.get().$promise.then(function(tickets) { $scope.tickets = tickets.Entries; }); })(),
-            /*==========  Get List of Users  ==========*/
-            users       : (function() {
+            my          : Site.my.get().$promise.then(function(my) { $scope.my = my.Entries[0]; }),
+            tickets     : Site.tickets.get().$promise.then(function(tickets) { $scope.tickets = tickets.Entries; }),
+            users       : Site.users.get().$promise.then(function(users) { $scope.users = users.Entries; }),
+            stems       : (function() {
                             /*==========  Watch users for changes to sync with localStorage  ==========*/
-                            $scope.$watch('users', function (newVal, oldVal) {
+                            $scope.$watch('stems', function (newVal, oldVal) {
                                 if (newVal !== null && angular.isDefined(newVal) && newVal !== oldVal) {
-                                    localStorage.users = angular.toJson(newVal);
+                                    localStorage.stems = angular.toJson(newVal);
                                 }
                             }, true);
 
-                            /*==========  Tag users with additional info / tools  ==========*/
-                            function userTag(users) {
-                                var stems = 0;
-                                users = users || [];
-                                $scope.users = $scope.users || [];
-                                users.forEach(function(user, i) {
-                                    // if (($scope.users[i] || {}).stem) if (Math.random() > 0.5) angular.extend(user, { KeyscanUpdated: (new Date()).getTime(), KeyscanStatus: ['NOTIN', 'IN', 'OUT', 'IN2', 'OUT2', 'IN3', 'OUT3', 'IN4', 'OUT4', 'IN7', 'OUT7'][Math.floor((Math.random() * 10 + 1))] });
-                                    var userInit = {
-                                        KeyscanFromNow : moment(user.KeyscanUpdated).fromNow(),
-                                        KeyscanStamp   : moment(user.KeyscanUpdated).format('llll'),
-                                        add            : function() {
-                                                            var $this = this;
-                                                            $this.stem = ++$scope.stems;
-                                                            Site.userPic.get({ UserIDs: $this.UserID }).$promise.then(function(user) {
-                                                                $this.PhotoPath = Site.url + user.Entries[0].PhotoPath;
-                                                            });
-                                                        },
-                                        remove         : function() { delete this.stem; }
-                                    };
-                                    var local = $scope.users[i];
-                                    if (local) {
-                                        if (local.UserID !== user.UserID) console.error(local.Name, '>>', user.Name);
-                                        if (local.stem) {
-                                            stems++;
-                                            if (local.KeyscanUpdated !== user.KeyscanUpdated) {
-                                                $.extend(local, user, userInit);
-                                                console.table([[local.Name,local.KeyscanStatus,local.KeyscanStamp]]);
-                                            }
-                                        }
-                                    } else $scope.users.push($.extend(user, userInit));
-                                });
-                                $scope.stems = stems;
-                                return users;
-                            }
-
-                            /*==========  Get and Update users list  ==========*/
-                            (function userGet() {
-                                console.debug('get: users');
-                                Site.users.get().$promise.then(function(users) {
-                                    userTag(users.Entries);
-                                    setTimeout(userGet, refreshInterval);
-                                });
+                            (function updateStems() {
+                                if (Object.keys($scope.stems || {}).length)
+                                    Site.stems.get({ UserIDs: Object.keys($scope.stems).join(',') })
+                                        .$promise.then(function(stems) {
+                                            stems.Entries.forEach(function(user) { $.extend($scope.stems[user.UserID], $scope.stemInit(user)); });
+                                        }, function(e) { console.log('obj'); });
+                                setTimeout(updateStems, refreshInterval);
                             })();
-                            return userTag(angular.fromJson(localStorage.users));
+
+                            return angular.fromJson(localStorage.stems || {});
                         })(),
+            stemInit    : function(user) {
+                            return $.extend(user, {
+                                KeyscanFromNow  : moment(user.KeyscanUpdated).fromNow(),
+                                KeyscanStamp    : moment(user.KeyscanUpdated).format('llll'),
+                                PhotoPath       : user.PhotoPath
+                                                ? Site.url + user.PhotoPath
+                                                : (function() {
+                                                    Site.userPic.get({ UserIDs: user.UserID }).$promise.then(function(u) {
+                                                        $scope.stems[user.UserID].PhotoPath = Site.url + u.Entries[0].PhotoPath;
+                                                    });
+                                                })()
+                            });
+                        },
+            stemAdd  : function(user) { $scope.stems[user.UserID] = $scope.stemInit(user); },
+            stemRemove  : function(user) { delete $scope.stems[isNaN(parseInt(user)) ? user.UserID : user]; },
             userListType: localStorage.userListType || 'grid',
 
             /*==========  Event Handlers  ==========*/
@@ -92,7 +70,7 @@ angular
                                 prevNext = !!~[8,37,38].indexOf($event.keyCode) ? 'prev' : 'next';
                             user[prevNext]().focus();
                             if (!!~[8,46, undefined].indexOf($event.keyCode)) {
-                                this.user.remove();
+                                $scope.stemRemove(user.attr('id'));
                                 user.addClass(prevNext+'-'+$event.type);
                             }
                         },
@@ -104,11 +82,17 @@ angular
     .factory('Site', function ($resource) {
         var site       = 'http://genome.klick.com',
             resource   = function(path, params, actionParams) {
-                            return $resource(site + '/api' + path,
-                                params || { ForGrid: true },
+                            return $resource(site + '/api' + path, params || { ForGrid: true },
                                 { get: angular.extend(
-                                    typeof actionParams === 'function' ? { transformResponse: actionParams } : (actionParams || {}),
-                                    { method: 'JSONP', params: { format: 'json', callback: 'JSON_CALLBACK' } }
+                                    typeof actionParams === 'function' ? { transformResponse: actionParams } : (actionParams || {}), {
+                                        method: 'JSONP', params: { format: 'json', callback: 'JSON_CALLBACK' },
+                                        interceptor: {
+                                            responseError: function(e) {
+                                                if (~[0, 401, 403].indexOf(e.status))
+                                                    location.href = site + "login/?t=" + encodeURIComponent(location.href);
+                                            }
+                                        }
+                                    }
                                 )}
                             );
                         };
@@ -118,6 +102,7 @@ angular
             my      : resource('/user/current'),
             users   : resource('/user'),
             userPic : resource('/user/photo', { UserIDs: '@UserIDs' }),
+            stems   : resource('/user', { UserIDs: '@UserIDs' }),
             tickets : resource('/ticket'),
         };
     })
@@ -127,7 +112,7 @@ angular
             restrict :  'A',
             link     :  function (scope, el) {
                             el.bind('load', function () {
-                            	el[0].setAttribute('crossOrigin','anonymous');
+                                el[0].setAttribute('crossOrigin','anonymous');
                                 var c    = document.createElement('canvas');
                                 var ctx  = c.getContext('2d');
                                 ctx.drawImage(el[0], 0, 0);

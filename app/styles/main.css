@@ -65,7 +65,7 @@ users user connect a.glyphicon { padding: 10px; background: rgba(255, 255, 255, 
 users[type=list] user connect { position: absolute; right: 0; }
 users[type=list] user connect a.glyphicon { float: right; margin: 5px; }
 users[type=list] user:focus connect a.glyphicon { margin: 10px; padding: 15px; }
-users[type=grid] user connect a.glyphicon { position: absolute; top: 50%; left: 50%; margin-left: -60%; visibility: hidden; opacity: 0; }
+users[type=grid] user connect a.glyphicon { position: absolute; top: 50%; left: 50%; margin-top: 20px; margin-left: -60%; visibility: hidden; opacity: 0; }
 users[type=grid] user connect a[href^=tel],
 users[type=grid] user:focus connect a.glyphicon { visibility: visible; opacity: 1; }
 users[type=grid] user:focus connect a.glyphicon { margin: -20px; }
