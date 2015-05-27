@@ -45,7 +45,7 @@ users[view=grid] user info role,
 users[view=grid] user info team { max-height: 0; overflow: hidden; }
 
 users[view=list] user info,
-users[view=list] user scan { padding-right: 10px; clear: right; }
+users[view=list] user scan { padding: 5px 10px; margin: 5px 0; clear: right; }
 users[view=list] user scan status,
 users[view=list] user scan time { display: inline-block; }
 users[view=list] user info team,
@@ -63,7 +63,7 @@ users user[status^=OUT] scan { background: rgba(255, 255, 0, .75); }
 users user connect a.glyphicon { padding: 10px; background: rgba(255, 255, 255, 0.5); border-radius: 50%; box-shadow: 1px 1px 15px; font-size: 20px; transition: all ease-out .25s; }
 
 users[view=list] user connect { position: absolute; right: 0; }
-users[view=list] user connect a.glyphicon { float: right; margin: 5px; }
+users[view=list] user connect a.glyphicon { float: right; margin: -10px 5px; }
 users[view=list] user:focus connect a.glyphicon { margin: 10px; padding: 15px; }
 users[view=grid] user connect a.glyphicon { position: absolute; top: 50%; left: 50%; margin-top: 20px; margin-left: -60%; visibility: hidden; opacity: 0; }
 users[view=grid] user connect a[href^=tel],

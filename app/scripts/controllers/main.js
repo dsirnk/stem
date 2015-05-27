@@ -16,7 +16,7 @@ angular
         angular.extend($scope, {
             /*==========  Initialize scope variables  ==========*/
             my          : (function() { Site.my.get().$promise.then(function(my) { $scope.my = (my || [])[0]; }); })(),
-            // tasks       : (function() { Site.tasks.get().$promise.then(function(tasks) { $scope.tasks = tasks; }); })(),
+            tasks       : (function() { Site.tasks.get().$promise.then(function(tasks) { $scope.tasks = tasks; }); })(),
             users       : (function() { Site.users.get().$promise.then(function(users) { $scope.users = users; }); })(),
             stems       : (function() {
                             /*==========  Watch users for changes to sync with localStorage  ==========*/
