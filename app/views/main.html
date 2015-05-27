@@ -3,8 +3,8 @@
     <span class="pull-right">
         <a class="btn glyphicon glyphicon-off" onclick="localStorage.clear();"></a>
         <!-- <a class="btn glyphicon glyphicon-edit" ng-click="edit = true"></a> -->
-        <a class="btn glyphicon glyphicon-th-large" onclick="localStorage.userListType = 'grid'; document.querySelector('users[type]').setAttribute('type','grid')"></a>
-        <a class="btn glyphicon glyphicon-th-list" onclick="localStorage.userListType = 'list'; document.querySelector('users[type]').setAttribute('type','list')"></a>
+        <a class="btn glyphicon glyphicon-th-large" onclick="localStorage.stemView = 'grid'; document.querySelector('users[type]').setAttribute('type','grid')"></a>
+        <a class="btn glyphicon glyphicon-th-list" onclick="localStorage.stemView = 'list'; document.querySelector('users[type]').setAttribute('type','list')"></a>
     </span>
 </nav>
 
@@ -12,8 +12,7 @@
     <input
         ng-model               = "userQuery"
         ng-show                = "users"
-        typeahead              = "user.Name for user in users | filter: userFilter | orderBy:'Name'"
-        typeahead-wait-ms      = "100"
+        typeahead              = "user.Name for user in users | filter:$viewValue"
         typeahead-template-url = "user.html"
         typeahead-on-select    = "stemAdd($item); userQuery = undefined"
         placeholder            = "Select User"
@@ -31,13 +30,15 @@
     </script>
 </form>
 <users
-    type                       = "{{userListType}}">
+    ng-model                   = "stems"
+    view                       = "{{stemView}}"
+    ui-sortable                = "stemSort">
     <user
         ng-repeat              = "user in stems"
-        id                     = "{{user.UserID}}"
-        status                 = "{{user.KeyscanStatus}}"
         title                  = "{{user.KeyscanStamp}}"
-        ui-keydown             = "{ 'backspace delete left up right down': 'userMove($event)' }"
+        status                 = "{{user.KeyscanStatus}}"
+        onclick                = "this.focus()"
+        ui-keydown             = "{ 'backspace delete left up right down': 'stemUpdate($event)' }"
         tabindex               = "1">
             <img
                 loadImage
@@ -70,21 +71,21 @@
                     class      = "glyphicon glyphicon-earphone"></a>
             </connect>
             <x
-                ng-click       = "stemRemove(user)"
+                ng-click       = "stemRemove($index)"
                 class          = "glyphicon glyphicon-remove text-danger"></x>
     </user>
 </users>
-<tickets
-    ng-show = "tickets">
-    <h5>Tickets ({{(tickets | filter: {GroupName:'OpenForMe'}).length}})</h5>
-    <ticket
-        ng-repeat = "ticket in tickets | filter: { GroupName: 'OpenForMe' } | orderBy:'GroupName':true track by ticket.TicketID"
+<tasks
+    ng-show = "tasks">
+    <h5>Tasks ({{(tasks | filter: {GroupName:'OpenForMe'}).length}})</h5>
+    <task
+        ng-repeat = "task in tasks | filter: { GroupName: 'OpenForMe' } | orderBy:'GroupName':true track by task.TicketID"
         tabindex  = "1">
         <info>
-            <id>{{ticket.TicketID}} » {{ticket.AssignedToUser}}</id>
-            <title>{{ticket.Title}}</title>
+            <id>{{task.TicketID}} » {{task.AssignedToUser}}</id>
+            <title>{{task.Title}}</title>
         </info>
         <history></history>
-    </ticket>
+    </task>
 <!-- <progressbar class = "progress-striped active" value = "userUpdateInterval"></progressbar> -->
-</tickets>
+</tasks>
