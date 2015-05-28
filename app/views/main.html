@@ -13,6 +13,7 @@
         ng-model               = "userQuery"
         ng-show                = "users"
         typeahead              = "user.Name for user in users | filter:$viewValue"
+        typeahead-wait-ms      = "1000"
         typeahead-template-url = "user.html"
         typeahead-on-select    = "stemAdd($item); userQuery = undefined"
         placeholder            = "Select User"
