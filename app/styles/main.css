@@ -71,7 +71,7 @@ users[view=list] user:focus connect a.glyphicon { padding: 15px; margin: 0 10px;
 
 users[view=grid] user:focus connect { top: 100%; }
 users[view=grid] user:focus connect a.glyphicon,
-users[view=grid] user connect a.glyphicon:nth-child(1) { visibility: visible; opacity: 1; }
+users[view=grid] user connect a.glyphicon:nth-child(2) { visibility: visible; opacity: 1; }
 users[view=grid] user:focus connect a.glyphicon { margin-left: -20px; }
 users[view=grid] user:focus connect a.glyphicon:nth-child(1) { margin-left: -65px; }
 users[view=grid] user:focus connect a.glyphicon:nth-child(3) { margin-left: 25px; }
