@@ -125,7 +125,7 @@ angular
 if (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) {
     var proto = $.ui.mouse.prototype,
         _mouseInit = proto._mouseInit,
-        touchStartTime, touchStartElement;
+        tapTime, tapEl;
     $.extend(proto, {
         _mouseInit: function() {
             this.element.bind("touchstart." + this.widgetName, $.proxy(this, "_touchStart"));
@@ -133,9 +133,9 @@ if (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.m
         },
         _touchStart: function(event) {
             if(
-                event.originalEvent.targetTouches.length != 1 ||
-                (touchStartTime - (touchStartTime = new Date().getTime())) < -2000 ||
-                touchStartElement !== (touchStartElement = event.originalEvent.target)
+                tapEl !== (tapEl = event.originalEvent.target) ||
+                (tapTime - (tapTime = new Date().getTime())) < -1000 ||
+                event.originalEvent.targetTouches.length != 1
             ) return;
             this.element.bind("touchmove." + this.widgetName, $.proxy(this, "_touchMove"))
                         .bind("touchend." + this.widgetName, $.proxy(this, "_touchEnd"));

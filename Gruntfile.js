@@ -367,7 +367,7 @@ module.exports = function (grunt) {
 
     exec: {
       deploy: {
-        cmd: 'git add <%= yeoman.dist %> -f && git commit -m "deploy" && git subtree push --prefix <%= yeoman.dist %> origin gh-pages'
+        cmd: 'git push origin `git subtree split --prefix <%= yeoman.dist %> master`:gh-pages --force'
       }
     },
 
