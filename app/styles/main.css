@@ -71,10 +71,10 @@ users[view=list] user:focus connect a.glyphicon { padding: 15px; margin: 0 10px;
 
 users[view=grid] user:focus connect { top: 100%; }
 users[view=grid] user:focus connect a.glyphicon,
-users[view=grid] user connect a.glyphicon:nth-child(2) { visibility: visible; opacity: 1; }
+users[view=grid] user connect a.glyphicon[href^=tel] { visibility: visible; opacity: 1; }
 users[view=grid] user:focus connect a.glyphicon { margin-left: -20px; }
-users[view=grid] user:focus connect a.glyphicon:nth-child(1) { margin-left: -65px; }
-users[view=grid] user:focus connect a.glyphicon:nth-child(3) { margin-left: 25px; }
+users[view=grid] user:focus connect a.glyphicon:not(.ng-hide) + a  { margin-left: -65px; }
+users[view=grid] user:focus connect a.glyphicon:not(.ng-hide) + a + a { margin-left: 25px; }
 
 users user x[class*=remove] { position: absolute; top: 0; right: 0; padding: 5px; visibility: hidden; opacity: 0; }
 users user[edit] x,

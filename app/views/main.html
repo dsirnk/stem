@@ -56,13 +56,13 @@
             </scan>
             <connect>
                 <a
-                    ng-show    = "user.Email"
-                    href       = "mailto:{{user.Email}}"
-                    class      = "glyphicon glyphicon-envelope"></a>
-                <a
                     ng-show    = "user.MobileNumber"
                     href       = "tel:{{user.MobileNumber}}"
                     class      = "glyphicon glyphicon-earphone"></a>
+                <a
+                    ng-show    = "user.Email"
+                    href       = "mailto:{{user.Email}}"
+                    class      = "glyphicon glyphicon-envelope"></a>
                 <a
                     ng-show    = "user.MobileNumber"
                     href       = "sms:{{user.MobileNumber}}"
