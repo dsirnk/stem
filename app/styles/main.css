@@ -67,7 +67,7 @@ users[view=grid] user connect a.glyphicon { position: absolute; margin-left: -60
 
 users user:focus connect a.glyphicon { background: rgba(255, 255, 255, 1); }
 
-users[view=list] user:focus connect a.glyphicon { padding: 15px; margin: 5px 10px; }
+users[view=list] user:focus connect a.glyphicon { padding: 15px; margin: 0 10px; }
 
 users[view=grid] user:focus connect { top: 100%; }
 users[view=grid] user:focus connect a.glyphicon,
