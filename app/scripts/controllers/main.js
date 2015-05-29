@@ -66,7 +66,10 @@ angular
                             }
                         },
             stemView    : localStorage.stemView || 'grid',
-            stemSort    : { containment : 'parent', cursor : 'move', opacity : 0.75, revert : 250, tolerance : 'pointer', 'ui-floating' : 'auto' }
+            stemSort    : {
+                            containment: 'parent', cursor: 'move', opacity: 0.75, revert: 250, tolerance: 'pointer', 'ui-floating': 'auto',
+                            stop: function(e, ui) { ui.item[0].removeAttribute('style'); }
+                        }
         });
     })
     /*==========  User API Interaction  ==========*/
@@ -121,14 +124,19 @@ angular
 /*==========  Touch support for jQuery UI  ==========*/
 if (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) {
     var proto = $.ui.mouse.prototype,
-        _mouseInit = proto._mouseInit;
+        _mouseInit = proto._mouseInit,
+        touchStartTime, touchStartElement;
     $.extend(proto, {
         _mouseInit: function() {
             this.element.bind("touchstart." + this.widgetName, $.proxy(this, "_touchStart"));
             _mouseInit.apply(this, arguments);
         },
         _touchStart: function(event) {
-            if (event.originalEvent.targetTouches.length != 1) return false;
+            if(
+                event.originalEvent.targetTouches.length != 1 ||
+                (touchStartTime - (touchStartTime = new Date().getTime())) < -2000 ||
+                touchStartElement !== (touchStartElement = event.originalEvent.target)
+            ) return;
             this.element.bind("touchmove." + this.widgetName, $.proxy(this, "_touchMove"))
                         .bind("touchend." + this.widgetName, $.proxy(this, "_touchEnd"));
             this._modifyEvent(event);
@@ -136,7 +144,9 @@ if (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.m
             this._mouseDown(event);
             return false;
         },
-        _touchMove: function(event) { this._modifyEvent(event); this._mouseMove(event);
+        _touchMove: function(event) {
+            this._modifyEvent(event);
+            this._mouseMove(event);
         },
         _touchEnd: function(event) {
             this.element.unbind("touchmove." + this.widgetName)
@@ -146,8 +156,8 @@ if (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.m
         _modifyEvent: function(event) {
             event.which = 1;
             var target = event.originalEvent.targetTouches[0];
-            event.pageX = target.clientX;
-            event.pageY = target.clientY;
+            event.pageX = target.pageX;
+            event.pageY = target.pageY;
         }
     });
 }

@@ -5,6 +5,7 @@
         <!-- <a class="btn glyphicon glyphicon-edit" ng-click="edit = true"></a> -->
         <a class="btn glyphicon glyphicon-th-large" onclick="document.querySelector('users[view]').setAttribute('view',localStorage.stemView = 'grid')"></a>
         <a class="btn glyphicon glyphicon-th-list" onclick="document.querySelector('users[view]').setAttribute('view',localStorage.stemView = 'list')"></a>
+        <a class="btn glyphicon glyphicon-sort" ng-show="touch" ng-click="touchSort()"></a>
     </span>
 </nav>
 
@@ -56,20 +57,20 @@
             <connect>
                 <a
                     ng-show    = "user.MobileNumber"
-                    href       = "gtalk:chat?jid={{user.Email}}&amp;from_jid={{my.Email}}"
-                    class      = "glyphicon glyphicon-send"></a>
-                <a
-                    ng-show    = "user.MobileNumber"
-                    href       = "sms:{{user.MobileNumber}}"
-                    class      = "glyphicon glyphicon-comment"></a>
+                    href       = "tel:{{user.MobileNumber}}"
+                    class      = "glyphicon glyphicon-earphone"></a>
                 <a
                     ng-show    = "user.Email"
                     href       = "mailto:{{user.Email}}"
                     class      = "glyphicon glyphicon-envelope"></a>
                 <a
                     ng-show    = "user.MobileNumber"
-                    href       = "tel:{{user.MobileNumber}}"
-                    class      = "glyphicon glyphicon-earphone"></a>
+                    href       = "sms:{{user.MobileNumber}}"
+                    class      = "glyphicon glyphicon-comment"></a>
+                <!-- <a
+                    ng-show    = "user.MobileNumber"
+                    href       = "gtalk:chat?jid={{user.Email}}&amp;from_jid={{my.Email}}"
+                    class      = "glyphicon glyphicon-send"></a> -->
             </connect>
             <x
                 ng-click       = "stemRemove($index)"
