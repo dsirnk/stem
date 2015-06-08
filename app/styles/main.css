@@ -49,12 +49,12 @@ users[view=list] user info role,
 users[view=list] user scan time { float: right; }
 users[view=list] user:focus info name { font-size: 14px; line-height: 14px; }
 
-users user[status^=IN],
-users user[status^=OUT] { animationx: bounce ease-out .5s; }
-users user[status^=IN] { box-shadow: 1px 1px 10px rgba(64,255,64, .75); }
-users user[status^=IN] scan { background: rgba(64, 255, 64, .75); }
-users user[status^=OUT] { box-shadow: 1px 1px 10px rgba(255, 255, 0, .75); }
-users user[status^=OUT] scan { background: rgba(255, 255, 0, .75); }
+users user[status^=In],
+users user[status^=Out] { animationx: bounce ease-out .5s; }
+users user[status^=In] { box-shadow: 1px 1px 10px rgba(64,255,64, .75); }
+users user[status^=In] scan { background: rgba(64, 255, 64, .75); }
+users user[status^=Out] { box-shadow: 1px 1px 10px rgba(255, 255, 0, .75); }
+users user[status^=Out] scan { background: rgba(255, 255, 0, .75); }
 
 users user connect { position: absolute; right: 0; }
 users user connect a.glyphicon { padding: 10px; background: rgba(255, 255, 255, 0.5); border-radius: 50%; box-shadow: 1px 1px 15px; font-size: 20px; }
