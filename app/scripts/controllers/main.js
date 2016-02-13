@@ -45,10 +45,10 @@ angular
                             return $.extend(user, {
                                 KeyscanFromNow  : moment(user.KeyscanUpdated).fromNow(),
                                 KeyscanStamp    : moment(user.KeyscanUpdated).format('llll'),
-                                PhotoPath       : user.PhotoPath ? ~user.PhotoPath.indexOf(Site.url) ? user.PhotoPath : Site.url + user.PhotoPath
+                                PhotoPath       : user.PhotoPath ? ~user.PhotoPath.indexOf(Site.url) ? user.PhotoPath : Site.url + user.PhotoPath.replace('_sq.','.')
                                                 : (function() {
                                                     Site.photo.get({ UserIDs: user.UserID }).$promise.then(function(u) {
-                                                        user.PhotoPath = Site.url + u[0].PhotoPath;
+                                                        user.PhotoPath = Site.url + u[0].PhotoPath.replace('_sq.','.');
                                                     });
                                                 })()
                             });
@@ -74,7 +74,7 @@ angular
     })
     /*==========  User API Interaction  ==========*/
     .factory('Site', function ($resource) {
-        var site       = 'http://genome.klick.com',
+        var site       = 'https://genome.klick.com',
             resource   = function(url, params, actions) {
                             return $resource(
                                 site + '/api' + url,
@@ -97,7 +97,7 @@ angular
             url     : site,
             my      : resource('/user/current'),
             tasks   : resource('/ticket'),
-            users   : resource('/user'),
+            users   : resource('/user/search'),
             stems   : resource('/user', { UserIDs: '@UserIDs' }),
             photo   : resource('/user/photo', { UserIDs: '@UserIDs' })
         };

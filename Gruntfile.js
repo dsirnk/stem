@@ -453,8 +453,7 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin',
-    'ftp-deploy'
+    'htmlmin'
   ]);
 
   grunt.registerTask('deploy', [

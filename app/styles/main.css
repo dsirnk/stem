@@ -38,13 +38,13 @@ users[view=grid] user info,
 users[view=grid] user scan { position: absolute; left: 0; right: 0; }
 users[view=grid] user info { top: 0; }
 users[view=grid] user info role,
-users[view=grid] user info team { max-height: 0; overflow: hidden; }
+users[view=grid] user info x10n { max-height: 0; overflow: hidden; }
 
 users[view=list] user info,
 users[view=list] user scan { padding: 5px 10px; margin: 5px 0; clear: right; }
 users[view=list] user scan status,
 users[view=list] user scan time { display: inline-block; }
-users[view=list] user info team,
+users[view=list] user info x10n,
 users[view=list] user info role,
 users[view=list] user scan time { float: right; }
 users[view=list] user:focus info name { font-size: 14px; line-height: 14px; }

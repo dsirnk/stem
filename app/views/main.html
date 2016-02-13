@@ -27,7 +27,7 @@
         <a>
             <name bind-html-unsafe="match.label | typeaheadHighlight:query"></name>
             <role bind-html-unsafe="match.model.Title | typeaheadHighlight:query"></role> -
-            <team bind-html-unsafe="match.model.BusinessUnitName | typeaheadHighlight:query"></team>
+            <team bind-html-unsafe="match.model.Extension | typeaheadHighlight:query"></team>
         </a>
     </script>
 </form>
@@ -46,7 +46,7 @@
                 loadImage
                 ng-src         = "{{user.PhotoPath}}"/>
             <info>
-                <team>{{user.BusinessUnitName}}</team>
+                <x10n>{{user.Extension}}</x10n>
                 <name>{{user.Name}}</name>
                 <role>{{user.Title}}</role>
             </info>
