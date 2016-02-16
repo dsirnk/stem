@@ -82,12 +82,13 @@ users user:focus x { visibility: visible; opacity: 1; }
 
 tasks { padding: 20px; }
 tasks,
-tasks > task,
-tasks > task > *,
-tasks > task > info title { display: block; }
+tasks > a[task],
+tasks > a[task] info id,
+tasks > a[task] info id:after { display: block; }
 
-tasks > task { margin: 15px auto; }
-tasks > task info { margin-bottom: 5px; }
-tasks > task info id { font: bold medium Arial; }
-tasks > task history { max-height: 0; overflow: hidden; transition: max-height ease-out .5s; }
-tasks > task:focus history { max-height: 300px; overflow: auto; }
+tasks > a[task] { padding: 10px; text-decoration: none; }
+tasks > a[task] info { margin-bottom: 5px; }
+tasks > a[task] info id { font: bold medium Arial; }
+tasks > a[task] info id:after { content: attr(title); font: caption; color: initial; }
+tasks > a[task] history { max-height: 0; overflow: hidden; transition: max-height ease-out .5s; }
+tasks > a[task]:focus history { max-height: 300px; overflow: auto; }

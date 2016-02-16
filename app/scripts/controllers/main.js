@@ -15,8 +15,9 @@ angular
     .controller('MainCtrl', function ($scope, $filter, Site) {
         angular.extend($scope, {
             /*==========  Initialize scope variables  ==========*/
+            site        : Site.url,
             my          : (function() { Site.my.get().$promise.then(function(my) { $scope.my = (my || [])[0]; }); })(),
-            tasks       : (function() { Site.tasks.get().$promise.then(function(tasks) { $scope.tasks = tasks; }); })(),
+            tasks       : (function() { Site.tasks.get().$promise.then(function(tasks) { console.log(tasks); $scope.tasks = tasks; }); })(),
             users       : (function() { Site.users.get().$promise.then(function(users) { $scope.users = users; }); })(),
             stems       : (function() {
                             /*==========  Watch users for changes to sync with localStorage  ==========*/
@@ -45,10 +46,10 @@ angular
                             return $.extend(user, {
                                 KeyscanFromNow  : moment(user.KeyscanUpdated).fromNow(),
                                 KeyscanStamp    : moment(user.KeyscanUpdated).format('llll'),
-                                PhotoPath       : user.PhotoPath ? ~user.PhotoPath.indexOf(Site.url) ? user.PhotoPath : Site.url + user.PhotoPath.replace('_sq.','.')
+                                PhotoPath       : user.PhotoPath ? ~user.PhotoPath.indexOf($scope.site) ? user.PhotoPath : $scope.site + user.PhotoPath.replace('_sq.','.')
                                                 : (function() {
                                                     Site.photo.get({ UserIDs: user.UserID }).$promise.then(function(u) {
-                                                        user.PhotoPath = Site.url + u[0].PhotoPath.replace('_sq.','.');
+                                                        user.PhotoPath = $scope.site + u[0].PhotoPath.replace('_sq.','.');
                                                     });
                                                 })()
                             });

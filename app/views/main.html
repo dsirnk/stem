@@ -80,14 +80,13 @@
 <tasks
     ng-show = "tasks">
     <h5>Tasks ({{(tasks | filter: {GroupName:'OpenForMe'}).length}})</h5>
-    <task
+    <a task ng-href="{{site}}/search/?q={{task.TicketID}}" target="_blank" 
         ng-repeat = "task in tasks | filter: { GroupName: 'OpenForMe' } | orderBy:'GroupName':true track by task.TicketID"
         tabindex  = "1">
         <info>
-            <id>{{task.TicketID}} » {{task.AssignedToUser}}</id>
-            <title>{{task.Title}}</title>
+            <id title="{{task.Title}}">{{task.TicketID}} » {{task.AssignedToUser}}</id>
         </info>
         <history></history>
-    </task>
+    </a>
 <!-- <progressbar class = "progress-striped active" value = "userUpdateInterval"></progressbar> -->
 </tasks>

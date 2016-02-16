@@ -20,7 +20,7 @@ angular
     'ui.utils'
   ],
   function ($compileProvider) {
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(mailto|tel|sms|gtalk||):/);
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|tel|sms|gtalk||):/);
   })
   .config(function ($routeProvider) {
     $routeProvider
