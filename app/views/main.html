@@ -1,7 +1,7 @@
 <nav class="navbar navbar-inverse">
     <a class="navbar-brand" href="#"><img src="apple-touch-icon.png" alt="">Stem</a>
     <span class="pull-right">
-        <a class="btn glyphicon glyphicon-off" onclick="localStorage.clear(); location.reload();"></a>
+        <a class="btn glyphicon glyphicon-off" ng-click="stemReset()"></a>
         <!-- <a class="btn glyphicon glyphicon-edit" ng-click="edit = true"></a> -->
         <a class="btn glyphicon" ng-click="isCards = (storage.stemCards = !isCards)" ng-class="isCards ? 'glyphicon-th-large' :
 'glyphicon-th-list'"></a>

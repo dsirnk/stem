@@ -17,7 +17,7 @@ angular
             /*==========  Initialize scope variables  ==========*/
             site        : Site.url,
             my          : (function() { Site.my.get().$promise.then(function(my) { $scope.my = (my || [])[0]; }); })(),
-            tasks       : (function() { Site.tasks.get().$promise.then(function(tasks) { console.log(tasks); $scope.tasks = tasks; }); })(),
+            tasks       : (function() { Site.tasks.get().$promise.then(function(tasks) { $scope.tasks = tasks; }); })(),
             users       : (function() { Site.users.get().$promise.then(function(users) { $scope.users = users; }); })(),
             stems       : (function() {
                             /*==========  Watch users for changes to sync with localStorage  ==========*/
@@ -66,6 +66,7 @@ angular
                                 user.addClass(prevNext+'-'+e.type);
                             }
                         },
+            stemReset   : function () { $scope.stems.length = 0; },
             storage     : localStorage,
             isCards     : localStorage.stemCards == 'true',
             stemSort    : {

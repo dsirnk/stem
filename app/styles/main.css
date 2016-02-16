@@ -4,10 +4,8 @@
 input ~ *[class*=remove] { position: absolute; right: 0; height: 100%; width: 50px; background-color: transparent; border: 1px solid transparent; z-index: 2; vertical-align: middle; cursor: pointer; }
 input[required]:not(:valid) ~ *[class*=remove] { display: none; }
 
-users { display: block; }
-users.grid { text-align: center; }
-
-users user { position: relative; display: inline-block; margin: 20px 10px 0; outline: 0; font: normal 11px/1.3 Arial; vertical-align: top; transition: all ease-out .15s; }
+users { display: block; text-align: center; }
+users user { position: relative; display: inline-block; width: 300px; max-width: 100%; margin: 20px 10px 0; outline: 0; font: normal 11px/1.3 Arial; vertical-align: top; }
 users user.ng-enter,
 users user.ng-hide,
 users user.ng-leave-active { opacity: 0; max-height: 0; overflow: hidde; transform: scaleY(0); }
@@ -16,15 +14,17 @@ users user.ng-leave-active.next-keydown { transform-origin: right; }
 users user.ng-animate scan { }
 users user img { pointer-events: none; }
 
-users.grid user { min-width: 100px; min-height: 150px; }
+users.grid user { width: 100px; min-height: 150px; }
 users.grid user:focus { z-index: 1; transform: scale(1.5); }
 
-users.card user { width: 300px; }
+users.card user { text-align: left; }
 users.card user:focus { margin-left: 0; margin-right: 0; }
 users.card user:after { content: ''; display: block; clear: both; }
-users.card user img { float: left; height: 95px; margin-right: 10px; transition: all ease-out .15s; }
+users.card user img { float: left; height: 95px; margin-right: 10px; }
 users.card user:focus img { height: 125px; }
 
+users user > *,
+users user connect a.glyphicon { transition: all ease-out .25s; }
 users user info,
 users user scan,
 users user info > *,
@@ -58,8 +58,6 @@ users user[status^=Out] scan { background: rgba(255, 255, 0, .75); }
 
 users user connect { position: absolute; right: 0; }
 users user connect a.glyphicon { padding: 10px; background: rgba(255, 255, 255, 0.5); border-radius: 50%; box-shadow: 1px 1px 15px; font-size: 20px; }
-users user connect,
-users user connect a.glyphicon { transition: all ease-out .25s; }
 users user x[class*=remove] { position: absolute; top: 0; right: 0; padding: 5px; visibility: hidden; opacity: 0; }
 
 users.card user connect a.glyphicon { margin: -10px 5px; }
