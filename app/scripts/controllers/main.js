@@ -65,7 +65,8 @@ angular
                                 user.addClass(prevNext+'-'+e.type);
                             }
                         },
-            stemView    : localStorage.stemView || 'grid',
+            storage     : localStorage,
+            isCards     : localStorage.stemCards == 'true',
             stemSort    : {
                             containment: 'parent', cursor: 'move', opacity: 0.75, revert: 250, tolerance: 'pointer', 'ui-floating': 'auto',
                             stop: function(e, ui) { ui.item[0].removeAttribute('style'); }

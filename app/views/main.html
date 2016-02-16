@@ -3,8 +3,8 @@
     <span class="pull-right">
         <a class="btn glyphicon glyphicon-off" onclick="localStorage.clear(); location.reload();"></a>
         <!-- <a class="btn glyphicon glyphicon-edit" ng-click="edit = true"></a> -->
-        <a class="btn glyphicon glyphicon-th-large" onclick="document.querySelector('users[view]').setAttribute('view',localStorage.stemView = 'grid')"></a>
-        <a class="btn glyphicon glyphicon-th-list" onclick="document.querySelector('users[view]').setAttribute('view',localStorage.stemView = 'list')"></a>
+        <a class="btn glyphicon" ng-click="isCards = (storage.stemCards = !isCards)" ng-class="isCards ? 'glyphicon-th-large' :
+'glyphicon-th-list'"></a>
         <a class="btn glyphicon glyphicon-sort" ng-show="touch" ng-click="touchSort()"></a>
     </span>
 </nav>
@@ -33,7 +33,7 @@
 </form>
 <users
     ng-model                   = "stems"
-    view                       = "{{stemView}}"
+    ng-class                   = "isCards ? 'card' : 'grid'"
     ui-sortable                = "stemSort">
     <user
         ng-repeat              = "user in stems"
