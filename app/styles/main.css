@@ -1,3 +1,5 @@
+img { max-width: 100%; }
+
 .container { padding: 0; overflow-x: hidden; }
 .navbar-brand img { display: inline-block; height: 20px; margin-right: 10px; }
 
