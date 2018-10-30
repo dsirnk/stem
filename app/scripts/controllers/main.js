@@ -99,7 +99,7 @@ angular
         return {
             url     : site,
             my      : resource('/user/current'),
-            tasks   : resource('/ticket'),
+            tasks   : resource('/ticket', { ForAutocompleter: true }),
             users   : resource('/user/search'),
             stems   : resource('/user', { UserIDs: '@UserIDs' }),
             photo   : resource('/user/photo', { UserIDs: '@UserIDs' })
